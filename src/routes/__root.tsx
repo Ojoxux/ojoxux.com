@@ -45,6 +45,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         type: 'font/woff',
         crossOrigin: 'anonymous',
       },
+      {
+        rel: 'icon',
+        href: '/favicon-32.ico',
+        sizes: '32x32',
+      },
+      {
+        rel: 'icon',
+        href: '/favicon-16.ico',
+        sizes: '16x16',
+      },
     ],
   }),
 
