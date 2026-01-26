@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && opennextjs build",
+    "build": "next build && opennextjs-cloudflare build",
     "preview": "wrangler dev",
     "format": "biome format",
     "lint": "biome lint",
