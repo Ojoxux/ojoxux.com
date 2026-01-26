@@ -1,17 +1,11 @@
+'use client'
+
 import { useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
 import { Snowflake } from 'lucide-react'
-import PixelSnow from '../components/PixelSnow'
-import VisitorCounter, { visitorCountQueryOptions } from '../components/VisitorCounter'
+import PixelSnow from './PixelSnow'
+import VisitorCounter from './VisitorCounter'
 
-export const Route = createFileRoute('/')({
-  loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(visitorCountQueryOptions())
-  },
-  component: Home,
-})
-
-function Home() {
+export default function HomeClient() {
   const [showSnow, setShowSnow] = useState(true)
 
   return (
@@ -38,6 +32,7 @@ function Home() {
         </div>
       </div>
       <button
+        type="button"
         onClick={() => setShowSnow(!showSnow)}
         className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
         aria-label={showSnow ? '雪を非表示' : '雪を表示'}
@@ -49,3 +44,4 @@ function Home() {
     </div>
   )
 }
+

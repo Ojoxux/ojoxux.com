@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   Scene,
@@ -255,6 +257,7 @@ export default function PixelSnow({
   }, []);
 
   // Main Three.js setup - only runs once
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Effect is intentionally initialized once.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
