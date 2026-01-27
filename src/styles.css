@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "PixelFont";
+  src: url("./assets/fonts/dot_font.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-family-pixel: "PixelFont", monospace, sans-serif;
 }

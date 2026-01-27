@@ -2,12 +2,13 @@ node_modules
 .DS_Store
 dist
 dist-ssr
+.next
+.open-next
 *.local
 count.txt
 .env
 .nitro
-.tanstack
 .wrangler
 .output
-.vinxi
+tsconfig.tsbuildinfo
 todos.json
