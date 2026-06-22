@@ -31,10 +31,16 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build for Cloudflare
-        run: pnpm run build:cf
+        run: pnpm exec opennextjs-cloudflare build --config wrangler.prod.jsonc
+
+      - name: Apply D1 migrations (production)
+        run: pnpm exec wrangler d1 migrations apply ojoxux-com-prod-db --config wrangler.prod.jsonc --remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy to Cloudflare Workers
-        run: pnpm exec wrangler deploy
+        run: pnpm exec wrangler deploy --config wrangler.prod.jsonc
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
