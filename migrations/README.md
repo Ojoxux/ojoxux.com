@@ -1,6 +1,16 @@
 # Database Migrations
 
-このディレクトリには、SupabaseDBのマイグレーションファイルを置く。
+このディレクトリには、DBのマイグレーションファイルを置く。
+
+## 現行DB
+
+- D1: `migrations/d1/`
+
+## Legacy
+
+- Supabase: `migrations/0001_setup_supabase.sql`
+
+Supabaseは訪問者カウンターの旧実装で使用していたDB。現在の訪問者カウンターはD1を使う。
 
 ## マイグレーションファイルの命名規則
 
@@ -14,6 +24,7 @@ NNNN_description.sql
 ### e.g.
 
 - `0001_setup_supabase.sql`
+- `d1/0001_visitor_count.sql`
 
 ## ロールバック
 

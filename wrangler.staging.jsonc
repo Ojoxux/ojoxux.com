@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "ojoxux-com",
+  "name": "ojoxux-com-staging",
   "compatibility_date": "2025-01-05",
   "compatibility_flags": ["nodejs_compat"],
   "main": ".open-next/worker.js",
@@ -8,11 +8,17 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "routes": [
+    {
+      "pattern": "staging.ojoxux.com",
+      "custom_domain": true
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "ojoxux-com-prod-db",
-      "database_id": "434f718c-37d6-4345-a811-8916d7429abc",
+      "database_name": "ojoxux-com-staging-db",
+      "database_id": "a5aaeeae-f279-4249-b148-853f54b9a93a",
       "migrations_dir": "migrations/d1"
     }
   ]
