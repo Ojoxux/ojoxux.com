@@ -4,6 +4,7 @@ dist
 dist-ssr
 .next
 .open-next
+.direnv
 *.local
 count.txt
 .env
