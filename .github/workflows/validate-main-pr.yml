@@ -1,0 +1,20 @@
+name: Validate Main Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  source-branch:
+    name: Source branch is staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject pull requests from branches other than staging
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" != "staging" ]; then
+            echo "::error::Pull requests to main must come from staging."
+            exit 1
+          fi
