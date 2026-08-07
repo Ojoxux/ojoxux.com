@@ -1,7 +1,7 @@
 <%= ENV["PR_TITLE"] %>
 
 ## 確認事項
-- [ ] staging での動作チェック
+- [ ] [staging環境](https://staging.ojoxux.com) での動作チェック
 
 ## 更新内容
 <% pull_requests.each do |pr| -%>
