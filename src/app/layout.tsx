@@ -4,8 +4,8 @@ import '../styles.css'
 export const metadata: Metadata = {
   title: 'ojoxux.com',
   icons: [
-    { rel: 'icon', url: '/favicon-32.ico', sizes: '32x32' },
-    { rel: 'icon', url: '/favicon-16.ico', sizes: '16x16' },
+    { rel: 'icon', url: '/favicon-32-v2.ico', sizes: '32x32' },
+    { rel: 'icon', url: '/favicon-16-v2.ico', sizes: '16x16' },
   ],
 }
 
