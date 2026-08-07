@@ -5,7 +5,8 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = { nixpkgs, ... }:
+  outputs =
+    { nixpkgs, ... }:
     let
       supportedSystems = [
         "aarch64-darwin"
@@ -14,9 +15,8 @@
         "x86_64-linux"
       ];
 
-      forAllSystems = function:
-        nixpkgs.lib.genAttrs supportedSystems
-          (system: function nixpkgs.legacyPackages.${system});
+      forAllSystems =
+        function: nixpkgs.lib.genAttrs supportedSystems (system: function nixpkgs.legacyPackages.${system});
     in
     {
       devShells = forAllSystems (pkgs: {
@@ -28,6 +28,6 @@
         };
       });
 
-      formatter = forAllSystems (pkgs: pkgs.nixpkgs-fmt);
+      formatter = forAllSystems (pkgs: pkgs.nixfmt);
     };
 }
