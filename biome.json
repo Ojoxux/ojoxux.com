@@ -7,11 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": [
-			"**/src/**/*",
-			"**/.vscode/**/*",
-			"!**/src/styles.css"
-		]
+		"includes": ["src/**/*", ".vscode/**/*", "!src/styles.css"]
 	},
 	"formatter": {
 		"enabled": true,
