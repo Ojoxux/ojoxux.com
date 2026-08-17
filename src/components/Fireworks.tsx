@@ -70,10 +70,13 @@ function updateParticle(particle: Particle): void {
 function drawParticle(ctx: CanvasRenderingContext2D, particle: Particle): void {
 	ctx.save();
 	ctx.globalAlpha = particle.alpha;
-	ctx.beginPath();
-	ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
 	ctx.fillStyle = particle.color;
-	ctx.fill();
+	ctx.fillRect(
+		particle.x - particle.size,
+		particle.y - particle.size,
+		particle.size * 2,
+		particle.size * 2,
+	);
 	ctx.restore();
 }
 
@@ -146,23 +149,21 @@ function explodeFirework(
 
 function drawFirework(ctx: CanvasRenderingContext2D, firework: Firework): void {
 	ctx.save();
-	ctx.beginPath();
-	if (firework.trail.length > 1) {
-		const [first, ...rest] = firework.trail;
-		if (first) {
-			ctx.moveTo(first.x, first.y);
-			for (const point of rest) {
-				ctx.lineTo(point.x, point.y);
-			}
-		}
-	} else {
-		ctx.moveTo(firework.x, firework.y);
-		ctx.lineTo(firework.x, firework.y);
+	ctx.fillStyle = firework.color;
+	for (const point of firework.trail) {
+		ctx.fillRect(
+			point.x - firework.size / 2,
+			point.y - firework.size / 2,
+			firework.size,
+			firework.size,
+		);
 	}
-	ctx.strokeStyle = firework.color;
-	ctx.lineWidth = firework.size;
-	ctx.lineCap = "round";
-	ctx.stroke();
+	ctx.fillRect(
+		firework.x - firework.size / 2,
+		firework.y - firework.size / 2,
+		firework.size,
+		firework.size,
+	);
 	ctx.restore();
 }
 
