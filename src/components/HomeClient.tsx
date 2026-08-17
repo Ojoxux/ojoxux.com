@@ -1,12 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { Snowflake } from "lucide-react";
+import { useEffect, useState } from "react";
+import { PartyPopper, Snowflake } from "lucide-react";
+import Fireworks from "./Fireworks";
 import PixelSnow from "./PixelSnow";
 import VisitorCounter from "./VisitorCounter";
 
+const isBirthday = (date: Date): boolean =>
+	date.getMonth() === 7 && date.getDate() === 18;
+
 export default function HomeClient() {
 	const [showSnow, setShowSnow] = useState(true);
+	const [isBirthdayToday, setIsBirthdayToday] = useState(false);
+	const [showFireworks, setShowFireworks] = useState(true);
+
+	useEffect(() => {
+		setIsBirthdayToday(isBirthday(new Date()));
+	}, []);
 
 	return (
 		<div className="relative min-h-screen bg-black">
@@ -26,6 +36,7 @@ export default function HomeClient() {
 					direction={125}
 				/>
 			)}
+			{isBirthdayToday && showFireworks && <Fireworks />}
 			<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
 				<div className="pointer-events-auto">
 					<VisitorCounter />
@@ -41,6 +52,18 @@ export default function HomeClient() {
 					className={`w-6 h-6 transition-colors ${showSnow ? "text-white" : "text-white/40"}`}
 				/>
 			</button>
+			{isBirthdayToday && (
+				<button
+					type="button"
+					onClick={() => setShowFireworks(!showFireworks)}
+					className="absolute top-4 right-16 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+					aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
+				>
+					<PartyPopper
+						className={`w-6 h-6 transition-colors ${showFireworks ? "text-white" : "text-white/40"}`}
+					/>
+				</button>
+			)}
 		</div>
 	);
 }
