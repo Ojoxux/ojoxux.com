@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useMemo, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import {
-	Scene,
-	OrthographicCamera,
-	WebGLRenderer,
-	PlaneGeometry,
-	ShaderMaterial,
+	Color,
 	Mesh,
+	OrthographicCamera,
+	PlaneGeometry,
+	Scene,
+	ShaderMaterial,
 	Vector2,
 	Vector3,
-	Color,
+	WebGLRenderer,
 } from "three";
 
 const vertexShader = `
