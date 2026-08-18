@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { PartyPopper, Snowflake } from "pixelarticons/react";
 import { useEffect, useState } from "react";
-import Fireworks from "./Fireworks";
+import Fireworks from "./birthday/Fireworks";
+import { resolveBirthdayMode } from "./birthday/mode";
 import HatenaStar from "./HatenaStar";
 import PixelSnow from "./PixelSnow";
 import VisitorCounter from "./VisitorCounter";
@@ -13,16 +14,13 @@ import VisitorCounter from "./VisitorCounter";
 const pixelButtonClass =
 	"p-1.5 bg-white/10 hover:bg-white/20 rounded-none border-2 border-white/30 shadow-[2px_2px_0_#4b5563] transition-colors active:translate-x-[2px] active:translate-y-[2px] active:shadow-none";
 
-const isBirthday = (date: Date): boolean =>
-	date.getMonth() === 7 && date.getDate() === 18;
-
 export default function HomeClient() {
 	const [showSnow, setShowSnow] = useState(true);
-	const [isBirthdayToday, setIsBirthdayToday] = useState(false);
+	const [birthdayMode, setBirthdayMode] = useState(false);
 	const [showFireworks, setShowFireworks] = useState(true);
 
 	useEffect(() => {
-		setIsBirthdayToday(isBirthday(new Date()));
+		setBirthdayMode(resolveBirthdayMode(new Date()));
 	}, []);
 
 	return (
@@ -43,7 +41,7 @@ export default function HomeClient() {
 					direction={125}
 				/>
 			)}
-			{isBirthdayToday && showFireworks && <Fireworks />}
+			{birthdayMode && showFireworks && <Fireworks />}
 			<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
 				<div className="pointer-events-auto">
 					<VisitorCounter />
@@ -62,7 +60,7 @@ export default function HomeClient() {
 					<HatenaStar />
 				</div>
 				<div className="flex items-center gap-2 pointer-events-auto">
-					{isBirthdayToday && (
+					{birthdayMode && (
 						<button
 							type="button"
 							onClick={() => setShowFireworks(!showFireworks)}
