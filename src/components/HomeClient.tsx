@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { PartyPopper, Snowflake } from "lucide-react";
+import { useEffect, useState } from "react";
 import Fireworks from "./Fireworks";
+import HatenaStar from "./HatenaStar";
 import PixelSnow from "./PixelSnow";
 import VisitorCounter from "./VisitorCounter";
 
@@ -42,28 +43,31 @@ export default function HomeClient() {
 					<VisitorCounter />
 				</div>
 			</div>
-			<button
-				type="button"
-				onClick={() => setShowSnow(!showSnow)}
-				className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
-				aria-label={showSnow ? "雪を非表示" : "雪を表示"}
-			>
-				<Snowflake
-					className={`w-6 h-6 transition-colors ${showSnow ? "text-white" : "text-white/40"}`}
-				/>
-			</button>
-			{isBirthdayToday && (
+			<div className="absolute top-4 right-4 flex items-center gap-2">
+				<HatenaStar />
+				{isBirthdayToday && (
+					<button
+						type="button"
+						onClick={() => setShowFireworks(!showFireworks)}
+						className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+						aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
+					>
+						<PartyPopper
+							className={`w-6 h-6 transition-colors ${showFireworks ? "text-white" : "text-white/40"}`}
+						/>
+					</button>
+				)}
 				<button
 					type="button"
-					onClick={() => setShowFireworks(!showFireworks)}
-					className="absolute top-4 right-16 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
-					aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
+					onClick={() => setShowSnow(!showSnow)}
+					className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+					aria-label={showSnow ? "雪を非表示" : "雪を表示"}
 				>
-					<PartyPopper
-						className={`w-6 h-6 transition-colors ${showFireworks ? "text-white" : "text-white/40"}`}
+					<Snowflake
+						className={`w-6 h-6 transition-colors ${showSnow ? "text-white" : "text-white/40"}`}
 					/>
 				</button>
-			)}
+			</div>
 		</div>
 	);
 }
