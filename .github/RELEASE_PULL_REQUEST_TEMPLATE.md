@@ -3,7 +3,7 @@
 ## 確認事項
 - [ ] [staging環境](https://staging.ojoxux.com) での動作チェック
 
-## 更新内容
+## 変更内容
 <% pull_requests.each do |pr| -%>
-<%= pr.to_checklist_item %>
+- #<%= pr.number %><%= pr.mention %>
 <% end -%>
