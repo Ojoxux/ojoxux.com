@@ -1,11 +1,17 @@
 "use client";
 
-import { PartyPopper, Snowflake } from "lucide-react";
+import Link from "next/link";
+import { PartyPopper, Snowflake } from "pixelarticons/react";
 import { useEffect, useState } from "react";
 import Fireworks from "./Fireworks";
 import HatenaStar from "./HatenaStar";
 import PixelSnow from "./PixelSnow";
 import VisitorCounter from "./VisitorCounter";
+
+// 角を落として硬いオフセット影を付け、押すと影の分だけ沈むドット調ボタン。
+// 影の色はカウンターの drop-shadow と同じ #4b5563 に合わせている。
+const pixelButtonClass =
+	"p-2 bg-white/10 hover:bg-white/20 rounded-none border-2 border-white/30 shadow-[3px_3px_0_#4b5563] transition-colors active:translate-x-[3px] active:translate-y-[3px] active:shadow-none";
 
 const isBirthday = (date: Date): boolean =>
 	date.getMonth() === 7 && date.getDate() === 18;
@@ -38,18 +44,26 @@ export default function HomeClient() {
 				/>
 			)}
 			{isBirthdayToday && showFireworks && <Fireworks />}
+			<div className="absolute top-4 left-8 flex items-center gap-2">
+				<Link
+					href="/"
+					className="font-pixel text-lg text-white select-none tracking-wide transition-colors hover:text-white/70"
+				>
+					ojoxux.com
+				</Link>
+				<HatenaStar />
+			</div>
 			<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
 				<div className="pointer-events-auto">
 					<VisitorCounter />
 				</div>
 			</div>
 			<div className="absolute top-4 right-4 flex items-center gap-2">
-				<HatenaStar />
 				{isBirthdayToday && (
 					<button
 						type="button"
 						onClick={() => setShowFireworks(!showFireworks)}
-						className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+						className={pixelButtonClass}
 						aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
 					>
 						<PartyPopper
@@ -60,7 +74,7 @@ export default function HomeClient() {
 				<button
 					type="button"
 					onClick={() => setShowSnow(!showSnow)}
-					className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+					className={pixelButtonClass}
 					aria-label={showSnow ? "雪を非表示" : "雪を表示"}
 				>
 					<Snowflake
