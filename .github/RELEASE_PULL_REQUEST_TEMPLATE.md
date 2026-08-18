@@ -1,9 +1,7 @@
 <%= ENV["PR_TITLE"] %>
 
-## 確認事項
-- [ ] [staging環境](https://staging.ojoxux.com) での動作チェック
+[staging環境](https://staging.ojoxux.com) で以下の動作確認をすること
 
-## 変更内容
 <% pull_requests.each do |pr| -%>
-- #<%= pr.number %><%= pr.mention %>
+<%= pr.to_checklist_item %>
 <% end -%>
