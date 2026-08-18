@@ -17,8 +17,8 @@
   "dependencies": {
     "@mcrovero/effect-nextjs": "^0.31.0",
     "effect": "^3.19.15",
-    "lucide-react": "^0.561.0",
     "next": "16.2.12",
+    "pixelarticons": "^2.4.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-error-boundary": "^6.0.2",
