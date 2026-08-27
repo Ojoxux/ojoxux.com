@@ -7,8 +7,6 @@ import Fireworks from "./birthday/Fireworks";
 import { resolveBirthdayMode } from "./birthday/mode";
 import HatenaStar from "./HatenaStar";
 import PixelSnow from "./PixelSnow";
-import Profile from "./Profile";
-import SocialLinks from "./SocialLinks";
 import VisitorCounter from "./VisitorCounter";
 
 // 角を落として硬いオフセット影を付け、押すと影の分だけ沈むドット調ボタン。
@@ -26,38 +24,42 @@ export default function HomeClient() {
 	}, []);
 
 	return (
-		<div className="min-h-screen bg-black">
-			<div className="fixed inset-0 -z-10 pointer-events-none">
-				{showSnow && (
-					<PixelSnow
-						color="#ffffff"
-						flakeSize={0.012}
-						minFlakeSize={1.3}
-						pixelResolution={200}
-						speed={1.25}
-						depthFade={7}
-						farPlane={15}
-						brightness={1.5}
-						gamma={0.4545}
-						density={0.2}
-						variant="round"
-						direction={125}
-					/>
-				)}
-				{birthdayMode && showFireworks && <Fireworks />}
+		<div className="relative min-h-screen bg-black">
+			{showSnow && (
+				<PixelSnow
+					color="#ffffff"
+					flakeSize={0.012}
+					minFlakeSize={1.3}
+					pixelResolution={200}
+					speed={1.25}
+					depthFade={7}
+					farPlane={15}
+					brightness={1.5}
+					gamma={0.4545}
+					density={0.2}
+					variant="round"
+					direction={125}
+				/>
+			)}
+			{birthdayMode && showFireworks && <Fireworks />}
+			<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+				<div className="pointer-events-auto">
+					<VisitorCounter />
+				</div>
 			</div>
-
-			<header className="flex items-center justify-between px-8 py-4">
-				<div className="flex items-center gap-2">
+			{/* 左右を1行にまとめて items-center に高さを揃えさせる。
+			    全幅に伸びる行なので、行自体はクリックを透過させて中身だけ拾う。 */}
+			<div className="absolute top-4 left-8 right-4 flex items-center justify-between pointer-events-none">
+				<div className="flex items-center gap-2 pointer-events-auto">
 					<Link
 						href="/"
-						className="text-lg text-white select-none tracking-wide transition-colors hover:text-white/70"
+						className="font-pixel text-lg text-white select-none tracking-wide transition-colors hover:text-white/70"
 					>
 						ojoxux.com
 					</Link>
 					<HatenaStar />
 				</div>
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2 pointer-events-auto">
 					{birthdayMode && (
 						<button
 							type="button"
@@ -81,17 +83,7 @@ export default function HomeClient() {
 						/>
 					</button>
 				</div>
-			</header>
-
-			<main className="grid grid-cols-1 gap-12 px-8 pb-16 lg:grid-cols-3 lg:gap-8">
-				<div className="flex flex-col gap-10">
-					<Profile />
-					<SocialLinks />
-					<VisitorCounter />
-				</div>
-				<div />
-				<div />
-			</main>
+			</div>
 		</div>
 	);
 }
