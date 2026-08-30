@@ -45,9 +45,9 @@ function VisitorCount() {
 
 	return (
 		<div className="flex items-center gap-2 select-none">
-			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<Eye className="h-6 w-6 text-white/50" aria-hidden="true" />
 			<span className="sr-only">Visits</span>
-			<span className="text-lg text-white/90">
+			<span className="text-2xl font-bold text-white">
 				<CountUp to={count} duration={1} separator="," />
 			</span>
 		</div>
@@ -57,7 +57,7 @@ function VisitorCount() {
 function LoadingFallback() {
 	return (
 		<div className="flex items-center gap-2">
-			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<Eye className="h-6 w-6 text-white/50" aria-hidden="true" />
 			<span className="sr-only">Visits</span>
 			<span className="text-lg text-white/40 animate-pulse">...</span>
 		</div>
@@ -72,7 +72,7 @@ function ErrorFallback({
 }) {
 	return (
 		<div className="flex items-center gap-2">
-			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<Eye className="h-6 w-6 text-white/50" aria-hidden="true" />
 			<span className="sr-only">Visits</span>
 			<span className="flex items-center gap-2 text-lg text-white/40">
 				<span>Error</span>
