@@ -33,8 +33,8 @@ export default function HomeClient({
 				{birthdayMode && showFireworks && <Fireworks />}
 			</div>
 
-			<div className="w-full max-w-[96rem]">
-				<main className="grid grid-cols-1 gap-16 px-8 lg:h-screen lg:grid-cols-[1fr_1.3fr_1fr] lg:gap-0 lg:px-12">
+			<div className="w-full max-w-[84rem]">
+				<main className="grid grid-cols-1 gap-16 px-8 lg:h-screen lg:grid-cols-[1fr_1.1fr_1.2fr] lg:gap-0 lg:px-12">
 					<div className="flex w-full flex-col gap-12 py-16 lg:sticky lg:top-0 lg:h-screen lg:min-h-0 lg:overflow-y-auto lg:pr-8">
 						<Profile />
 						<div className="mt-auto flex flex-col gap-6">
@@ -52,6 +52,7 @@ export default function HomeClient({
 									</button>
 								</div>
 							)}
+							<div className="border-t border-white/15" />
 							<VisitorCounter />
 						</div>
 					</div>

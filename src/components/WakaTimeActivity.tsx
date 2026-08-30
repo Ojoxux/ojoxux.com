@@ -20,13 +20,13 @@ export default function WakaTimeActivity({
 	return (
 		<div className="flex flex-col gap-5 text-white">
 			<div className="flex flex-col gap-1">
-				<h2 className="text-lg uppercase tracking-wider text-white/50">
+				<h2 className="text-sm uppercase tracking-wider text-white/50">
 					Activity
 				</h2>
-				<p className="text-2xl text-white/90">
-					<span className="font-mono">{totalText}</span>
+				<p className="text-xl text-white/90">
+					<span>{totalText}</span>
 					{rangeText && (
-						<span className="ml-2 text-base text-white/40">{rangeText}</span>
+						<span className="ml-2 text-sm text-white/40">{rangeText}</span>
 					)}
 				</p>
 			</div>
@@ -36,11 +36,11 @@ export default function WakaTimeActivity({
 
 					return (
 						<li key={language.name} className="flex items-center">
-							<span className="mr-1 w-28 shrink-0 truncate text-base text-white/80">
+							<span className="mr-1 w-28 shrink-0 truncate text-sm text-white/80">
 								{language.name}
 							</span>
-							<div className="flex flex-1 items-center gap-3">
-								<div className="flex h-2 flex-1 gap-0.5">
+							<div className="flex min-w-0 flex-1 items-center gap-3">
+								<div className="flex h-2 min-w-0 flex-1 gap-0.5">
 									{Array.from({ length: ROW_BLOCKS }, (_, blockIndex) => (
 										<div
 											// biome-ignore lint/suspicious/noArrayIndexKey: ブロックは同一の見た目で並び替えが起きないため index キーで問題ない
@@ -53,7 +53,7 @@ export default function WakaTimeActivity({
 										/>
 									))}
 								</div>
-								<span className="w-24 shrink-0 whitespace-nowrap text-right font-mono text-sm text-white/40">
+								<span className="min-w-24 shrink-0 whitespace-nowrap text-right text-xs text-white/40">
 									{language.text}
 								</span>
 							</div>

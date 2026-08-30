@@ -7,7 +7,7 @@ export default function WritingList({ posts }: { posts: BlogPost[] }) {
 
 	return (
 		<div className="flex flex-col gap-7 text-white">
-			<h2 className="text-lg uppercase tracking-wider text-white/50">Posts</h2>
+			<h2 className="text-sm uppercase tracking-wider text-white/50">Posts</h2>
 			<ul className="flex flex-col gap-8">
 				{posts.map((post) => (
 					<li key={post.link}>
@@ -29,10 +29,10 @@ export default function WritingList({ posts }: { posts: BlogPost[] }) {
 								<div className="aspect-video w-full rounded-sm bg-white/10" />
 							)}
 							<div className="flex flex-col gap-1">
-								<span className="text-xl text-white/90 transition-colors group-hover:text-white">
+								<span className="text-lg text-white/90 transition-colors group-hover:text-white">
 									{post.title}
 								</span>
-								<span className="text-lg text-white/40">{post.pubDate}</span>
+								<span className="text-sm text-white/40">{post.pubDate}</span>
 							</div>
 						</a>
 					</li>
