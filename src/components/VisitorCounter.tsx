@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { incrementVisitorCount } from "@/app/actions/visitor-count";
@@ -43,11 +44,10 @@ function VisitorCount() {
 	}
 
 	return (
-		<div className="flex flex-col gap-1 select-none">
-			<span className="text-sm font-semibold tracking-wide text-white/60">
-				Visits
-			</span>
-			<span className="text-xl text-white/90">
+		<div className="flex items-center gap-2 select-none">
+			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<span className="sr-only">Visits</span>
+			<span className="text-lg text-white/90">
 				<CountUp to={count} duration={1} separator="," />
 			</span>
 		</div>
@@ -56,11 +56,10 @@ function VisitorCount() {
 
 function LoadingFallback() {
 	return (
-		<div className="flex flex-col gap-1">
-			<span className="text-sm font-semibold tracking-wide text-white/60">
-				Visits
-			</span>
-			<span className="text-xl text-white/40 animate-pulse">...</span>
+		<div className="flex items-center gap-2">
+			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<span className="sr-only">Visits</span>
+			<span className="text-lg text-white/40 animate-pulse">...</span>
 		</div>
 	);
 }
@@ -72,11 +71,10 @@ function ErrorFallback({
 	resetErrorBoundary: () => void;
 }) {
 	return (
-		<div className="flex flex-col gap-1">
-			<span className="text-sm font-semibold tracking-wide text-white/60">
-				Visits
-			</span>
-			<span className="flex items-center gap-2 text-xl text-white/40">
+		<div className="flex items-center gap-2">
+			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<span className="sr-only">Visits</span>
+			<span className="flex items-center gap-2 text-lg text-white/40">
 				<span>Error</span>
 				<button
 					type="button"
