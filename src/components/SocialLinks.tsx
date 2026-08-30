@@ -22,7 +22,7 @@ const links: SocialLink[] = [
 	},
 	{
 		label: "X",
-		href: "https://x.com/ojoxux",
+		href: "https://x.com/ojoxux__18",
 		icon: XIcon,
 	},
 	{
@@ -39,14 +39,15 @@ const links: SocialLink[] = [
 
 export default function SocialLinks() {
 	return (
-		<ul className="flex flex-col gap-4">
+		<ul className="flex items-center gap-4">
 			{links.map((link) => (
 				<li key={link.label}>
 					<a
 						href={link.href}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="group flex items-center gap-3 text-xl text-white/70 transition-colors hover:text-white"
+						aria-label={link.label}
+						className="group flex items-center text-white/70 transition-colors hover:text-white"
 					>
 						{"icon" in link ? (
 							<link.icon className="h-7 w-7" />
@@ -59,7 +60,6 @@ export default function SocialLinks() {
 								className="h-7 w-7 opacity-70 invert transition-opacity group-hover:opacity-100"
 							/>
 						)}
-						{link.label}
 					</a>
 				</li>
 			))}

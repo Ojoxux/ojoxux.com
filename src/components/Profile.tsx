@@ -18,7 +18,7 @@ export default function Profile() {
 			</div>
 			<div className="flex items-center gap-3">
 				<Link href="/">
-					<h1 className="text-6xl font-bold tracking-wide">Ojoxux</h1>
+					<h1 className="text-4xl font-bold tracking-wide">Ojoxux</h1>
 				</Link>
 				<span className="inline-flex h-8 items-center justify-center">
 					<HatenaStar />
@@ -27,7 +27,7 @@ export default function Profile() {
 			<span className="select-none font-mono text-xs text-white/20">
 				44112f7c-1326-47f3-bea8-138e5ac9f02d
 			</span>
-			<p className="text-xl leading-relaxed text-white/70">
+			<p className="text-base leading-relaxed text-white/70">
 				しがないWebエンジニア．最近は関数型言語に関心がある．
 			</p>
 			<div className="border-t border-white/15" />

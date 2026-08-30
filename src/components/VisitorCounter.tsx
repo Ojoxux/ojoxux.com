@@ -43,12 +43,12 @@ function VisitorCount() {
 	}
 
 	return (
-		<div className="flex flex-col items-center gap-3 select-none">
-			<div className="text-4xl font-bold text-white">
+		<div className="flex flex-col gap-1 select-none">
+			<span className="text-sm font-semibold tracking-wide text-white/60">
+				Visits
+			</span>
+			<span className="text-xl text-white/90">
 				<CountUp to={count} duration={1} separator="," />
-			</div>
-			<span className="text-xs font-semibold tracking-widest text-white/50">
-				VISITS
 			</span>
 		</div>
 	);
@@ -56,8 +56,11 @@ function VisitorCount() {
 
 function LoadingFallback() {
 	return (
-		<div className="text-sm text-white/40 tracking-wider animate-pulse">
-			LOADING...
+		<div className="flex flex-col gap-1">
+			<span className="text-sm font-semibold tracking-wide text-white/60">
+				Visits
+			</span>
+			<span className="text-xl text-white/40 animate-pulse">...</span>
 		</div>
 	);
 }
@@ -69,15 +72,20 @@ function ErrorFallback({
 	resetErrorBoundary: () => void;
 }) {
 	return (
-		<div className="flex items-center gap-2 text-sm text-white/40">
-			<span>ERROR</span>
-			<button
-				type="button"
-				onClick={resetErrorBoundary}
-				className="underline hover:text-white/70 transition-colors"
-			>
-				RETRY
-			</button>
+		<div className="flex flex-col gap-1">
+			<span className="text-sm font-semibold tracking-wide text-white/60">
+				Visits
+			</span>
+			<span className="flex items-center gap-2 text-xl text-white/40">
+				<span>Error</span>
+				<button
+					type="button"
+					onClick={resetErrorBoundary}
+					className="text-sm underline hover:text-white/70 transition-colors"
+				>
+					Retry
+				</button>
+			</span>
 		</div>
 	);
 }
