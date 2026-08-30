@@ -1,11 +1,10 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Eye } from "lucide-react";
+import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import {
-	getVisitorCount,
-	incrementVisitorCount,
-} from "@/app/actions/visitor-count";
+import { incrementVisitorCount } from "@/app/actions/visitor-count";
+import CountUp from "./CountUp";
 
 function VisitorCount() {
 	const [count, setCount] = useState<number | null>(null);
@@ -14,33 +13,22 @@ function VisitorCount() {
 	useEffect(() => {
 		let cancelled = false;
 
-		const load = async () => {
-			try {
-				const data = await incrementVisitorCount();
+		incrementVisitorCount()
+			.then((data) => {
 				if (!cancelled) {
 					setCount(data.count);
 				}
-			} catch (incrementError) {
-				console.error("Failed to increment visitor count:", incrementError);
-				try {
-					const data = await getVisitorCount();
-					if (!cancelled) {
-						setCount(data.count);
-					}
-				} catch (fetchError) {
-					console.error("Failed to fetch visitor count:", fetchError);
-					if (!cancelled) {
-						setError(
-							fetchError instanceof Error
-								? fetchError
-								: new Error("Unknown error"),
-						);
-					}
+			})
+			.catch((fetchError) => {
+				console.error("Failed to increment visitor count:", fetchError);
+				if (!cancelled) {
+					setError(
+						fetchError instanceof Error
+							? fetchError
+							: new Error("Unknown error"),
+					);
 				}
-			}
-		};
-
-		load();
+			});
 
 		return () => {
 			cancelled = true;
@@ -56,23 +44,22 @@ function VisitorCount() {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center text-white font-pixel z-10">
-			<div className="relative">
-				<div
-					className="text-[20vw] font-bold leading-none tracking-wider text-white drop-shadow-[8px_8px_0_#4b5563] select-none"
-					style={{ fontFamily: "PixelFont, monospace" }}
-				>
-					{count.toLocaleString()}
-				</div>
-			</div>
+		<div className="flex items-center gap-2 select-none">
+			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<span className="sr-only">Visits</span>
+			<span className="text-lg text-white/90">
+				<CountUp to={count} duration={1} separator="," />
+			</span>
 		</div>
 	);
 }
 
 function LoadingFallback() {
 	return (
-		<div className="flex flex-col items-center justify-center text-white/80 font-pixel">
-			<div className="text-2xl animate-pulse tracking-widest">LOADING...</div>
+		<div className="flex items-center gap-2">
+			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<span className="sr-only">Visits</span>
+			<span className="text-lg text-white/40 animate-pulse">...</span>
 		</div>
 	);
 }
@@ -84,15 +71,19 @@ function ErrorFallback({
 	resetErrorBoundary: () => void;
 }) {
 	return (
-		<div className="flex flex-col items-center justify-center text-white/80 font-pixel gap-4">
-			<div className="text-2xl tracking-widest">ERROR!</div>
-			<button
-				type="button"
-				onClick={resetErrorBoundary}
-				className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded border border-white/30 transition-colors"
-			>
-				RETRY
-			</button>
+		<div className="flex items-center gap-2">
+			<Eye className="h-[18px] w-[18px] text-white/50" aria-hidden="true" />
+			<span className="sr-only">Visits</span>
+			<span className="flex items-center gap-2 text-lg text-white/40">
+				<span>Error</span>
+				<button
+					type="button"
+					onClick={resetErrorBoundary}
+					className="text-sm underline hover:text-white/70 transition-colors"
+				>
+					Retry
+				</button>
+			</span>
 		</div>
 	);
 }
@@ -100,9 +91,7 @@ function ErrorFallback({
 export default function VisitorCounter() {
 	return (
 		<ErrorBoundary FallbackComponent={ErrorFallback}>
-			<Suspense fallback={<LoadingFallback />}>
-				<VisitorCount />
-			</Suspense>
+			<VisitorCount />
 		</ErrorBoundary>
 	);
 }

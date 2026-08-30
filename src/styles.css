@@ -1,21 +1,8 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "PixelFont";
-  src: url("./assets/fonts/dot_font.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@theme {
-  --font-family-pixel: "PixelFont", monospace, sans-serif;
-}
-
-@layer utilities {
-  .font-pixel {
-    font-family: "PixelFont", monospace, sans-serif;
-  }
+html {
+  /* 90%にするといい感じになる */
+  font-size: 90%;
 }
 
 body {

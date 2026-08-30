@@ -1,21 +1,25 @@
 "use client";
 
-import Link from "next/link";
-import { PartyPopper, Snowflake } from "pixelarticons/react";
+import { PartyPopper } from "lucide-react";
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import Fireworks from "./birthday/Fireworks";
 import { resolveBirthdayMode } from "./birthday/mode";
-import HatenaStar from "./HatenaStar";
-import PixelSnow from "./PixelSnow";
+import Profile from "./Profile";
 import VisitorCounter from "./VisitorCounter";
 
-// 角を落として硬いオフセット影を付け、押すと影の分だけ沈むドット調ボタン。
-// 影の色はカウンターの drop-shadow と同じ #4b5563 に合わせている。
-const pixelButtonClass =
-	"p-1.5 bg-white/10 hover:bg-white/20 rounded-none border-2 border-white/30 shadow-[2px_2px_0_#4b5563] transition-colors active:translate-x-[2px] active:translate-y-[2px] active:shadow-none";
+const toggleButtonClass =
+	"p-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition-colors";
 
-export default function HomeClient() {
-	const [showSnow, setShowSnow] = useState(true);
+type HomeClientProps = {
+	wakaTimeSlot: ReactNode;
+	writingListSlot: ReactNode;
+};
+
+export default function HomeClient({
+	wakaTimeSlot,
+	writingListSlot,
+}: HomeClientProps) {
 	const [birthdayMode, setBirthdayMode] = useState(false);
 	const [showFireworks, setShowFireworks] = useState(true);
 
@@ -24,65 +28,49 @@ export default function HomeClient() {
 	}, []);
 
 	return (
-		<div className="relative min-h-screen bg-black">
-			{showSnow && (
-				<PixelSnow
-					color="#ffffff"
-					flakeSize={0.012}
-					minFlakeSize={1.3}
-					pixelResolution={200}
-					speed={1.25}
-					depthFade={7}
-					farPlane={15}
-					brightness={1.5}
-					gamma={0.4545}
-					density={0.2}
-					variant="round"
-					direction={125}
-				/>
-			)}
-			{birthdayMode && showFireworks && <Fireworks />}
-			<div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-				<div className="pointer-events-auto">
-					<VisitorCounter />
-				</div>
+		<div className="min-h-screen">
+			<div className="fixed inset-0 -z-10 bg-black pointer-events-none">
+				{birthdayMode && showFireworks && <Fireworks />}
 			</div>
-			{/* 左右を1行にまとめて items-center に高さを揃えさせる。
-			    全幅に伸びる行なので、行自体はクリックを透過させて中身だけ拾う。 */}
-			<div className="absolute top-4 left-8 right-4 flex items-center justify-between pointer-events-none">
-				<div className="flex items-center gap-2 pointer-events-auto">
-					<Link
-						href="/"
-						className="font-pixel text-lg text-white select-none tracking-wide transition-colors hover:text-white/70"
-					>
-						ojoxux.com
-					</Link>
-					<HatenaStar />
-				</div>
-				<div className="flex items-center gap-2 pointer-events-auto">
-					{birthdayMode && (
-						<button
-							type="button"
-							onClick={() => setShowFireworks(!showFireworks)}
-							className={pixelButtonClass}
-							aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
-						>
-							<PartyPopper
-								className={`w-5 h-5 transition-colors ${showFireworks ? "text-white" : "text-white/40"}`}
-							/>
-						</button>
-					)}
-					<button
-						type="button"
-						onClick={() => setShowSnow(!showSnow)}
-						className={pixelButtonClass}
-						aria-label={showSnow ? "雪を非表示" : "雪を表示"}
-					>
-						<Snowflake
-							className={`w-5 h-5 transition-colors ${showSnow ? "text-white" : "text-white/40"}`}
-						/>
-					</button>
-				</div>
+
+			<div className="w-full max-w-[84rem]">
+				<main className="grid grid-cols-1 gap-16 px-8 lg:h-screen lg:grid-cols-[1fr_1.1fr_1.2fr] lg:gap-0 lg:px-12">
+					<div className="flex w-full flex-col gap-12 py-16 lg:sticky lg:top-0 lg:h-screen lg:min-h-0 lg:overflow-y-auto lg:pr-8">
+						<Profile />
+						<div className="mt-auto flex flex-col gap-6">
+							{birthdayMode && (
+								<div className="flex items-center gap-3">
+									<button
+										type="button"
+										onClick={() => setShowFireworks(!showFireworks)}
+										className={toggleButtonClass}
+										aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
+									>
+										<PartyPopper
+											className={`w-5 h-5 transition-colors ${showFireworks ? "text-white" : "text-white/40"}`}
+										/>
+									</button>
+								</div>
+							)}
+							<div className="mt-28">
+								<VisitorCounter />
+							</div>
+						</div>
+					</div>
+					<div className="relative lg:h-full lg:min-h-0">
+						<div className="pointer-events-none absolute inset-y-12 left-0 hidden w-px bg-white/10 lg:block" />
+						<div className="py-16 lg:h-full lg:overflow-y-auto lg:px-8">
+							{wakaTimeSlot}
+						</div>
+					</div>
+					<div className="relative lg:h-full lg:min-h-0">
+						<div className="pointer-events-none absolute inset-y-12 left-0 hidden w-px bg-white/10 lg:block" />
+						<div className="pointer-events-none absolute inset-y-12 right-0 hidden w-px bg-white/10 lg:block" />
+						<div className="py-16 lg:h-full lg:overflow-y-auto lg:px-8">
+							{writingListSlot}
+						</div>
+					</div>
+				</main>
 			</div>
 		</div>
 	);
