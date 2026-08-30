@@ -23,7 +23,7 @@ export default function WakaTimeActivity({
 				<h2 className="text-sm uppercase tracking-wider text-white/50">
 					Activity
 				</h2>
-				<p className="text-xl text-white/90">
+				<p className="text-3xl font-bold text-white">
 					<span>{totalText}</span>
 					{rangeText && (
 						<span className="ml-2 text-sm text-white/40">{rangeText}</span>
