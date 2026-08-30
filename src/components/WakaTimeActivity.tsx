@@ -46,7 +46,9 @@ export default function WakaTimeActivity({
 											// biome-ignore lint/suspicious/noArrayIndexKey: ブロックは同一の見た目で並び替えが起きないため index キーで問題ない
 											key={blockIndex}
 											className={`h-full flex-1 rounded-[1px] ${
-												blockIndex < filledBlocks ? "bg-white/70" : "bg-white/10"
+												blockIndex < filledBlocks
+													? "bg-white/70"
+													: "bg-white/10"
 											}`}
 										/>
 									))}

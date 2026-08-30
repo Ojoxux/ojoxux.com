@@ -16,10 +16,10 @@ export default function Profile() {
 					priority
 				/>
 			</div>
-      <div className="flex items-center gap-3">
-        <Link href="/">
-          <h1 className="text-6xl font-bold tracking-wide">Ojoxux</h1>
-        </Link>
+			<div className="flex items-center gap-3">
+				<Link href="/">
+					<h1 className="text-6xl font-bold tracking-wide">Ojoxux</h1>
+				</Link>
 				<span className="inline-flex h-8 items-center justify-center">
 					<HatenaStar />
 				</span>
@@ -32,7 +32,9 @@ export default function Profile() {
 			</p>
 			<div className="border-t border-white/15" />
 			<div className="flex flex-col gap-4">
-				<h2 className="text-sm font-semibold tracking-wide text-white/60">Links</h2>
+				<h2 className="text-sm font-semibold tracking-wide text-white/60">
+					Links
+				</h2>
 				<SocialLinks />
 			</div>
 		</div>

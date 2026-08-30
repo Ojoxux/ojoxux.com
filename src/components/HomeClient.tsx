@@ -1,6 +1,6 @@
 "use client";
 
-import { PartyPopper, SaveOff } from "lucide-react";
+import { PartyPopper } from "lucide-react";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import Fireworks from "./birthday/Fireworks";
@@ -36,7 +36,7 @@ export default function HomeClient({
 			<div className="w-full max-w-[96rem]">
 				<main className="grid grid-cols-1 gap-16 px-8 lg:h-screen lg:grid-cols-[1fr_1.3fr_1fr] lg:gap-0 lg:px-12">
 					<div className="flex w-full flex-col gap-12 py-16 lg:sticky lg:top-0 lg:h-screen lg:min-h-0 lg:overflow-y-auto lg:pr-8">
-            <Profile />
+						<Profile />
 						<div className="mt-auto flex flex-col gap-6">
 							{birthdayMode && (
 								<div className="flex items-center gap-3">
@@ -51,7 +51,7 @@ export default function HomeClient({
 										/>
 									</button>
 								</div>
-              )}
+							)}
 							<VisitorCounter />
 						</div>
 					</div>

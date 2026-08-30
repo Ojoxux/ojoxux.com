@@ -7,9 +7,7 @@ export default function WritingList({ posts }: { posts: BlogPost[] }) {
 
 	return (
 		<div className="flex flex-col gap-7 text-white">
-			<h2 className="text-lg uppercase tracking-wider text-white/50">
-				Posts
-			</h2>
+			<h2 className="text-lg uppercase tracking-wider text-white/50">Posts</h2>
 			<ul className="flex flex-col gap-8">
 				{posts.map((post) => (
 					<li key={post.link}>
