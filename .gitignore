@@ -8,8 +8,11 @@ dist-ssr
 *.local
 count.txt
 .env
+.dev.vars
 .nitro
 .wrangler
 .output
 tsconfig.tsbuildinfo
 todos.json
+
+docs
