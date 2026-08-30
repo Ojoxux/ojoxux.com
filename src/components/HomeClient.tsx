@@ -52,8 +52,9 @@ export default function HomeClient({
 									</button>
 								</div>
 							)}
-							<div className="border-t border-white/15" />
-							<VisitorCounter />
+							<div className="mt-28">
+								<VisitorCounter />
+							</div>
 						</div>
 					</div>
 					<div className="relative lg:h-full lg:min-h-0">
