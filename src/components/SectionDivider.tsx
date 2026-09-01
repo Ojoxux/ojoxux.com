@@ -1,21 +1,38 @@
+import type { CSSProperties } from "react";
+
 type SectionDividerProps = {
 	className?: string;
+	wavelength?: number;
+	amplitude?: number;
+	speed?: number;
+	opacity?: number;
 };
-
-const WAVE_PATTERN =
-	"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q 6 0 12 4 T 24 4' fill='none' stroke='white' stroke-opacity='0.15' stroke-width='1.5'/%3E%3C/svg%3E\")";
 
 export default function SectionDivider({
 	className = "",
+	wavelength = 24,
+	amplitude = 4,
+	speed = 2,
+	opacity = 0.15,
 }: SectionDividerProps) {
+	const height = amplitude * 2;
+	const half = wavelength / 2;
+	const quarter = wavelength / 4;
+	const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${wavelength}' height='${height}' viewBox='0 0 ${wavelength} ${height}'><path d='M0 ${amplitude} Q ${quarter} 0 ${half} ${amplitude} T ${wavelength} ${amplitude}' fill='none' stroke='white' stroke-opacity='${opacity}' stroke-width='1.5'/></svg>`;
+
+	const style = {
+		height,
+		backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`,
+		backgroundSize: `${wavelength}px ${height}px`,
+		animation: `wave-scroll ${speed}s linear infinite`,
+		"--wave-length": `${wavelength}px`,
+	} as CSSProperties;
+
 	return (
 		<div
 			aria-hidden="true"
-			className={`h-2 animate-wave-scroll bg-repeat-x ${className}`}
-			style={{
-				backgroundImage: WAVE_PATTERN,
-				backgroundSize: "24px 8px",
-			}}
+			className={`bg-repeat-x ${className}`}
+			style={style}
 		/>
 	);
 }

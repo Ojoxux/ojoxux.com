@@ -1,15 +1,11 @@
 @import "tailwindcss";
 
-@utility animate-wave-scroll {
-  animation: wave-scroll 2s linear infinite;
-}
-
 @keyframes wave-scroll {
   from {
     background-position-x: 0;
   }
   to {
-    background-position-x: -24px;
+    background-position-x: calc(var(--wave-length, 24px) * -1);
   }
 }
 

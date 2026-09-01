@@ -31,7 +31,12 @@ export default function Profile() {
 			<p className="mt-4 text-base leading-relaxed text-white/70">
 				しがないWebエンジニア．最近は関数型言語に関心がある．
 			</p>
-			<SectionDivider className="my-5 -mx-8" />
+			<SectionDivider
+				wavelength={32}
+				amplitude={5}
+				speed={2.5}
+				className="my-5 -mx-8"
+			/>
 			<div className="flex flex-col gap-4">
 				<h2 className="text-sm font-semibold tracking-wide text-white/60">
 					Links
