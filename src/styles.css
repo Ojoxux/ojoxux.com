@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@keyframes wave-scroll {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: calc(var(--wave-length, 24px) * -1);
+  }
+}
+
 html {
   /* 90%にするといい感じになる */
   font-size: 90%;

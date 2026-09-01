@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Fireworks from "./birthday/Fireworks";
 import { resolveBirthdayMode } from "./birthday/mode";
 import Profile from "./Profile";
+import SectionDivider from "./SectionDivider";
 import VisitorCounter from "./VisitorCounter";
 
 const toggleButtonClass =
@@ -34,39 +35,50 @@ export default function HomeClient({
 			</div>
 
 			<div className="w-full max-w-[84rem]">
-				<main className="grid grid-cols-1 gap-16 px-8 lg:h-screen lg:grid-cols-[1fr_1.1fr_1.2fr] lg:gap-0 lg:px-12">
-					<div className="flex w-full flex-col gap-12 py-16 lg:sticky lg:top-0 lg:h-screen lg:min-h-0 lg:overflow-y-auto lg:pr-8">
-						<Profile />
-						<div className="mt-auto flex flex-col gap-6">
-							{birthdayMode && (
-								<div className="flex items-center gap-3">
-									<button
-										type="button"
-										onClick={() => setShowFireworks(!showFireworks)}
-										className={toggleButtonClass}
-										aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
-									>
-										<PartyPopper
-											className={`w-5 h-5 transition-colors ${showFireworks ? "text-white" : "text-white/40"}`}
-										/>
-									</button>
+				<main className="grid grid-cols-1 gap-8 lg:h-screen lg:grid-cols-[1fr_1.1fr_1.2fr] lg:gap-0">
+					<div className="flex w-full flex-col gap-6 pt-16 pb-8 lg:py-16 lg:sticky lg:top-0 lg:h-screen lg:min-h-0 lg:overflow-y-auto">
+						<div className="flex flex-col gap-6 px-8">
+							<Profile />
+							<div className="flex flex-col gap-6">
+								{birthdayMode && (
+									<div className="flex items-center gap-3">
+										<button
+											type="button"
+											onClick={() => setShowFireworks(!showFireworks)}
+											className={toggleButtonClass}
+											aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
+										>
+											<PartyPopper
+												className={`w-5 h-5 transition-colors ${showFireworks ? "text-white" : "text-white/40"}`}
+											/>
+										</button>
+									</div>
+								)}
+								<div className="flex flex-col gap-4">
+									<h2 className="text-sm font-semibold tracking-wide text-white/60">
+										Visitor
+									</h2>
+									<VisitorCounter />
 								</div>
-							)}
-							<div className="mt-28">
-								<VisitorCounter />
 							</div>
 						</div>
 					</div>
 					<div className="relative lg:h-full lg:min-h-0">
-						<div className="pointer-events-none absolute inset-y-12 left-0 hidden w-px bg-white/10 lg:block" />
-						<div className="py-16 lg:h-full lg:overflow-y-auto lg:px-8">
+						<div className="pointer-events-none absolute inset-x-0 top-0 lg:hidden">
+							<SectionDivider />
+						</div>
+						<div className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-white/10 lg:block" />
+						<div className="px-8 py-16 lg:h-full lg:overflow-y-auto">
 							{wakaTimeSlot}
 						</div>
 					</div>
 					<div className="relative lg:h-full lg:min-h-0">
-						<div className="pointer-events-none absolute inset-y-12 left-0 hidden w-px bg-white/10 lg:block" />
-						<div className="pointer-events-none absolute inset-y-12 right-0 hidden w-px bg-white/10 lg:block" />
-						<div className="py-16 lg:h-full lg:overflow-y-auto lg:px-8">
+						<div className="pointer-events-none absolute inset-x-0 top-0 lg:hidden">
+							<SectionDivider />
+						</div>
+						<div className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-white/10 lg:block" />
+						<div className="pointer-events-none absolute inset-y-0 right-0 hidden w-px bg-white/10 lg:block" />
+						<div className="px-8 py-16 lg:h-full lg:overflow-y-auto">
 							{writingListSlot}
 						</div>
 					</div>
