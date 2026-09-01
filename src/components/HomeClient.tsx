@@ -58,12 +58,14 @@ export default function HomeClient({
 						</div>
 					</div>
 					<div className="relative lg:h-full lg:min-h-0">
+						<div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10 lg:hidden" />
 						<div className="pointer-events-none absolute inset-y-12 left-0 hidden w-px bg-white/10 lg:block" />
 						<div className="py-16 lg:h-full lg:overflow-y-auto lg:px-8">
 							{wakaTimeSlot}
 						</div>
 					</div>
 					<div className="relative lg:h-full lg:min-h-0">
+						<div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10 lg:hidden" />
 						<div className="pointer-events-none absolute inset-y-12 left-0 hidden w-px bg-white/10 lg:block" />
 						<div className="pointer-events-none absolute inset-y-12 right-0 hidden w-px bg-white/10 lg:block" />
 						<div className="py-16 lg:h-full lg:overflow-y-auto lg:px-8">
