@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { PartyPopper } from "lucide-react";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
@@ -8,9 +9,6 @@ import { resolveBirthdayMode } from "./birthday/mode";
 import Profile from "./Profile";
 import SectionDivider from "./SectionDivider";
 import VisitorCounter from "./VisitorCounter";
-
-const toggleButtonClass =
-	"p-2 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition-colors";
 
 type HomeClientProps = {
 	wakaTimeSlot: ReactNode;
@@ -29,61 +27,234 @@ export default function HomeClient({
 	}, []);
 
 	return (
-		<div className="min-h-screen">
-			<div className="fixed inset-0 -z-10 bg-black pointer-events-none">
+		<div {...stylex.props(styles.root)}>
+			<div {...stylex.props(styles.background)}>
 				{birthdayMode && showFireworks && <Fireworks />}
 			</div>
 
-			<div className="w-full max-w-[84rem]">
-				<main className="grid grid-cols-1 gap-8 lg:h-screen lg:grid-cols-[1fr_1.1fr_1.2fr] lg:gap-0">
-					<div className="flex w-full flex-col gap-6 pt-16 pb-8 lg:py-16 lg:sticky lg:top-0 lg:h-screen lg:min-h-0 lg:overflow-y-auto">
-						<div className="flex flex-col gap-6 px-8">
+			<div {...stylex.props(styles.container)}>
+				<main {...stylex.props(styles.main)}>
+					<div {...stylex.props(styles.profileColumn)}>
+						<div {...stylex.props(styles.profileContent)}>
 							<Profile />
-							<div className="flex flex-col gap-6">
+							<div {...stylex.props(styles.profileDetails)}>
 								{birthdayMode && (
-									<div className="flex items-center gap-3">
+									<div {...stylex.props(styles.birthdayControls)}>
 										<button
 											type="button"
 											onClick={() => setShowFireworks(!showFireworks)}
-											className={toggleButtonClass}
+											{...stylex.props(styles.toggleButton)}
 											aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
 										>
 											<PartyPopper
-												className={`w-5 h-5 transition-colors ${showFireworks ? "text-white" : "text-white/40"}`}
+												{...stylex.props(
+													styles.partyIcon,
+													showFireworks
+														? styles.iconActive
+														: styles.iconInactive,
+												)}
 											/>
 										</button>
 									</div>
 								)}
-								<div className="flex flex-col gap-4">
-									<h2 className="text-sm font-semibold tracking-wide text-white/60">
-										Visitor
-									</h2>
+								<div {...stylex.props(styles.visitor)}>
+									<h2 {...stylex.props(styles.sectionHeading)}>Visitor</h2>
 									<VisitorCounter />
 								</div>
 							</div>
 						</div>
 					</div>
-					<div className="relative lg:h-full lg:min-h-0">
-						<div className="pointer-events-none absolute inset-x-0 top-0 lg:hidden">
+					<div {...stylex.props(styles.panel)}>
+						<div {...stylex.props(styles.mobileDivider)}>
 							<SectionDivider />
 						</div>
-						<div className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-white/10 lg:block" />
-						<div className="px-8 py-16 lg:h-full lg:overflow-y-auto">
-							{wakaTimeSlot}
-						</div>
+						<div {...stylex.props(styles.verticalDivider)} />
+						<div {...stylex.props(styles.panelContent)}>{wakaTimeSlot}</div>
 					</div>
-					<div className="relative lg:h-full lg:min-h-0">
-						<div className="pointer-events-none absolute inset-x-0 top-0 lg:hidden">
+					<div {...stylex.props(styles.panel)}>
+						<div {...stylex.props(styles.mobileDivider)}>
 							<SectionDivider />
 						</div>
-						<div className="pointer-events-none absolute inset-y-0 left-0 hidden w-px bg-white/10 lg:block" />
-						<div className="pointer-events-none absolute inset-y-0 right-0 hidden w-px bg-white/10 lg:block" />
-						<div className="px-8 py-16 lg:h-full lg:overflow-y-auto">
-							{writingListSlot}
-						</div>
+						<div {...stylex.props(styles.verticalDivider)} />
+						<div
+							{...stylex.props(styles.verticalDivider, styles.rightDivider)}
+						/>
+						<div {...stylex.props(styles.panelContent)}>{writingListSlot}</div>
 					</div>
 				</main>
 			</div>
 		</div>
 	);
 }
+
+const desktop = "@media (min-width: 1024px)";
+
+const styles = stylex.create({
+	root: {
+		minHeight: "100vh",
+	},
+	background: {
+		position: "fixed",
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0,
+		zIndex: -10,
+		backgroundColor: "#000",
+		pointerEvents: "none",
+	},
+	container: {
+		width: "100%",
+		maxWidth: "84rem",
+	},
+	main: {
+		display: "grid",
+		gridTemplateColumns: {
+			default: "1fr",
+			[desktop]: "1fr 1.1fr 1.2fr",
+		},
+		gap: {
+			default: 32,
+			[desktop]: 0,
+		},
+		height: {
+			default: "auto",
+			[desktop]: "100vh",
+		},
+	},
+	profileColumn: {
+		display: "flex",
+		width: "100%",
+		flexDirection: "column",
+		gap: 24,
+		paddingTop: 64,
+		paddingBottom: {
+			default: 32,
+			[desktop]: 64,
+		},
+		position: {
+			default: "static",
+			[desktop]: "sticky",
+		},
+		top: {
+			default: "auto",
+			[desktop]: 0,
+		},
+		height: {
+			default: "auto",
+			[desktop]: "100vh",
+		},
+		minHeight: {
+			default: "auto",
+			[desktop]: 0,
+		},
+		overflowY: {
+			default: "visible",
+			[desktop]: "auto",
+		},
+	},
+	profileContent: {
+		display: "flex",
+		flexDirection: "column",
+		gap: 24,
+		paddingInline: 32,
+	},
+	profileDetails: {
+		display: "flex",
+		flexDirection: "column",
+		gap: 24,
+	},
+	birthdayControls: {
+		display: "flex",
+		alignItems: "center",
+		gap: 12,
+	},
+	toggleButton: {
+		padding: 8,
+		borderRadius: 9999,
+		borderWidth: 1,
+		borderStyle: "solid",
+		borderColor: "rgba(255, 255, 255, 0.15)",
+		backgroundColor: {
+			default: "rgba(255, 255, 255, 0.05)",
+			":hover": "rgba(255, 255, 255, 0.1)",
+		},
+		transitionProperty: "background-color",
+		transitionDuration: "150ms",
+	},
+	partyIcon: {
+		width: 20,
+		height: 20,
+		transitionProperty: "color",
+		transitionDuration: "150ms",
+	},
+	iconActive: {
+		color: "#fff",
+	},
+	iconInactive: {
+		color: "rgba(255, 255, 255, 0.4)",
+	},
+	visitor: {
+		display: "flex",
+		flexDirection: "column",
+		gap: 16,
+	},
+	sectionHeading: {
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		fontWeight: 600,
+		letterSpacing: "0.025em",
+		color: "rgba(255, 255, 255, 0.6)",
+	},
+	panel: {
+		position: "relative",
+		height: {
+			default: "auto",
+			[desktop]: "100%",
+		},
+		minHeight: {
+			default: "auto",
+			[desktop]: 0,
+		},
+	},
+	mobileDivider: {
+		position: "absolute",
+		top: 0,
+		right: 0,
+		left: 0,
+		pointerEvents: "none",
+		display: {
+			default: "block",
+			[desktop]: "none",
+		},
+	},
+	verticalDivider: {
+		position: "absolute",
+		top: 0,
+		bottom: 0,
+		left: 0,
+		width: 1,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+		pointerEvents: "none",
+		display: {
+			default: "none",
+			[desktop]: "block",
+		},
+	},
+	rightDivider: {
+		right: 0,
+		left: "auto",
+	},
+	panelContent: {
+		paddingInline: 32,
+		paddingBlock: 64,
+		height: {
+			default: "auto",
+			[desktop]: "100%",
+		},
+		overflowY: {
+			default: "visible",
+			[desktop]: "auto",
+		},
+	},
+});

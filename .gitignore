@@ -16,3 +16,7 @@ tsconfig.tsbuildinfo
 todos.json
 
 docs
+
+.superpowers/
+
+.pnpm-store

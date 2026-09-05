@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { Effect } from "effect";
 import { Suspense } from "react";
 import HomeClient from "@/components/HomeClient";
@@ -7,26 +8,26 @@ import { BasePage } from "@/lib/runtime";
 
 function WakaTimeFallback() {
 	return (
-		<div className="flex animate-pulse flex-col gap-5">
-			<div className="flex flex-col gap-1">
-				<div className="h-5 w-20 rounded bg-white/10" />
-				<div className="h-7 w-36 rounded bg-white/10" />
+		<div {...stylex.props(styles.wakaFallback)}>
+			<div {...stylex.props(styles.fallbackHeading)}>
+				<div {...stylex.props(styles.wakaLabel)} />
+				<div {...stylex.props(styles.wakaTotal)} />
 			</div>
-			<div className="h-2.5 w-full rounded-full bg-white/10" />
+			<div {...stylex.props(styles.wakaBar)} />
 		</div>
 	);
 }
 
 function WritingFallback() {
 	return (
-		<div className="flex animate-pulse flex-col gap-7">
-			<div className="h-5 w-14 rounded bg-white/10" />
-			<div className="flex flex-col gap-8">
+		<div {...stylex.props(styles.writingFallback)}>
+			<div {...stylex.props(styles.postsLabel)} />
+			<div {...stylex.props(styles.postList)}>
 				{[0, 1, 2].map((index) => (
-					<div key={index} className="flex flex-col gap-3">
-						<div className="aspect-video w-full rounded-sm bg-white/10" />
-						<div className="h-5 w-3/4 rounded bg-white/10" />
-						<div className="h-4 w-24 rounded bg-white/10" />
+					<div key={index} {...stylex.props(styles.post)}>
+						<div {...stylex.props(styles.postImage)} />
+						<div {...stylex.props(styles.postTitle)} />
+						<div {...stylex.props(styles.postDate)} />
 					</div>
 				))}
 			</div>
@@ -52,3 +53,87 @@ const HomePage = Effect.fn("HomePage")(() =>
 );
 
 export default BasePage.build(HomePage);
+
+const pulse = stylex.keyframes({
+	"50%": {
+		opacity: 0.5,
+	},
+});
+
+const styles = stylex.create({
+	wakaFallback: {
+		display: "flex",
+		flexDirection: "column",
+		gap: 20,
+		animationName: pulse,
+		animationDuration: "2s",
+		animationTimingFunction: "cubic-bezier(0.4, 0, 0.6, 1)",
+		animationIterationCount: "infinite",
+	},
+	fallbackHeading: {
+		display: "flex",
+		flexDirection: "column",
+		gap: 4,
+	},
+	wakaLabel: {
+		width: 80,
+		height: 20,
+		borderRadius: 4,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+	},
+	wakaTotal: {
+		width: 144,
+		height: 28,
+		borderRadius: 4,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+	},
+	wakaBar: {
+		width: "100%",
+		height: 10,
+		borderRadius: 9999,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+	},
+	writingFallback: {
+		display: "flex",
+		flexDirection: "column",
+		gap: 28,
+		animationName: pulse,
+		animationDuration: "2s",
+		animationTimingFunction: "cubic-bezier(0.4, 0, 0.6, 1)",
+		animationIterationCount: "infinite",
+	},
+	postsLabel: {
+		width: 56,
+		height: 20,
+		borderRadius: 4,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+	},
+	postList: {
+		display: "flex",
+		flexDirection: "column",
+		gap: 32,
+	},
+	post: {
+		display: "flex",
+		flexDirection: "column",
+		gap: 12,
+	},
+	postImage: {
+		aspectRatio: "16 / 9",
+		width: "100%",
+		borderRadius: 2,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+	},
+	postTitle: {
+		width: "75%",
+		height: 20,
+		borderRadius: 4,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+	},
+	postDate: {
+		width: 96,
+		height: 16,
+		borderRadius: 4,
+		backgroundColor: "rgba(255, 255, 255, 0.1)",
+	},
+});
