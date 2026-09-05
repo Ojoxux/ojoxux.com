@@ -1,7 +1,7 @@
+import * as stylex from "@stylexjs/stylex";
 import type { CSSProperties } from "react";
 
 type SectionDividerProps = {
-	className?: string;
 	wavelength?: number;
 	amplitude?: number;
 	speed?: number;
@@ -9,7 +9,6 @@ type SectionDividerProps = {
 };
 
 export default function SectionDivider({
-	className = "",
 	wavelength = 24,
 	amplitude = 4,
 	speed = 2,
@@ -29,10 +28,13 @@ export default function SectionDivider({
 	} as CSSProperties;
 
 	return (
-		<div
-			aria-hidden="true"
-			className={`bg-repeat-x ${className}`}
-			style={style}
-		/>
+		<div aria-hidden="true" {...stylex.props(styles.root)} style={style} />
 	);
 }
+
+const styles = stylex.create({
+	root: {
+		width: "100%",
+		backgroundRepeat: "repeat-x",
+	},
+});

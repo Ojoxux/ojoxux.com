@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { useEffect, useRef } from "react";
 import { startShow } from "./fireworks/engine";
 
@@ -7,14 +8,10 @@ import { startShow } from "./fireworks/engine";
 const PIXEL_SCALE = 3;
 
 interface FireworksProps {
-	className?: string;
 	onComplete?: () => void;
 }
 
-export default function Fireworks({
-	className = "",
-	onComplete,
-}: FireworksProps) {
+export default function Fireworks({ onComplete }: FireworksProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const trailRef = useRef<HTMLCanvasElement>(null);
 	const sharpRef = useRef<HTMLCanvasElement>(null);
@@ -73,20 +70,32 @@ export default function Fireworks({
 	}, []);
 
 	return (
-		<div
-			ref={containerRef}
-			className={`absolute inset-0 w-full h-full pointer-events-none ${className}`}
-		>
-			<canvas
-				ref={trailRef}
-				className="absolute inset-0 w-full h-full"
-				style={{ imageRendering: "pixelated" }}
-			/>
-			<canvas
-				ref={sharpRef}
-				className="absolute inset-0 w-full h-full"
-				style={{ imageRendering: "pixelated" }}
-			/>
+		<div ref={containerRef} {...stylex.props(styles.container)}>
+			<canvas ref={trailRef} {...stylex.props(styles.canvas)} />
+			<canvas ref={sharpRef} {...stylex.props(styles.canvas)} />
 		</div>
 	);
 }
+
+const styles = stylex.create({
+	container: {
+		position: "absolute",
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0,
+		width: "100%",
+		height: "100%",
+		pointerEvents: "none",
+	},
+	canvas: {
+		position: "absolute",
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0,
+		width: "100%",
+		height: "100%",
+		imageRendering: "pixelated",
+	},
+});
