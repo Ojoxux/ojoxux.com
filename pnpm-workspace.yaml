@@ -2,6 +2,23 @@ packages:
   - .
 
 allowBuilds:
+  '@swc/core': true
   esbuild: true
   sharp: true
   workerd: true
+
+minimumReleaseAgeExclude:
+  - '@stylexswc/nextjs-plugin@0.18.6'
+  - '@stylexswc/plugin-shared@0.18.6'
+  - '@stylexswc/postcss-plugin@0.18.6'
+  - '@stylexswc/rs-compiler-darwin-arm64@0.18.6'
+  - '@stylexswc/rs-compiler-darwin-x64@0.18.6'
+  - '@stylexswc/rs-compiler-linux-arm64-gnu@0.18.6'
+  - '@stylexswc/rs-compiler-linux-x64-gnu@0.18.6'
+  - '@stylexswc/rs-compiler-linux-x64-musl@0.18.6'
+  - '@stylexswc/rs-compiler-win32-arm64-msvc@0.18.6'
+  - '@stylexswc/rs-compiler-win32-x64-msvc@0.18.6'
+  - '@stylexswc/rs-compiler@0.18.6'
+  - '@stylexswc/rspack-plugin@0.18.6'
+  - '@stylexswc/turbopack-plugin@0.18.6'
+  - '@stylexswc/webpack-plugin@0.18.6'

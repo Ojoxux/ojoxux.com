@@ -7,7 +7,6 @@ interface CountUpProps {
 	direction?: "up" | "down";
 	delay?: number;
 	duration?: number;
-	className?: string;
 	startWhen?: boolean;
 	separator?: string;
 	onStart?: () => void;
@@ -20,7 +19,6 @@ export default function CountUp({
 	direction = "up",
 	delay = 0,
 	duration = 2,
-	className = "",
 	startWhen = true,
 	separator = "",
 	onStart,
@@ -126,5 +124,5 @@ export default function CountUp({
 		return () => unsubscribe();
 	}, [springValue, formatValue]);
 
-	return <span className={className} ref={ref} />;
+	return <span ref={ref} />;
 }
