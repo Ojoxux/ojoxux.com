@@ -16,3 +16,5 @@ tsconfig.tsbuildinfo
 todos.json
 
 docs
+
+.superpowers/
