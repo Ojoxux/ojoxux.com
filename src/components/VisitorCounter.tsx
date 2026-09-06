@@ -3,7 +3,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
 import { incrementVisitorCount } from "@/app/actions/visitor-count";
 import CountUp from "./CountUp";
 
@@ -65,12 +65,7 @@ function LoadingFallback() {
 	);
 }
 
-function ErrorFallback({
-	resetErrorBoundary,
-}: {
-	error: Error;
-	resetErrorBoundary: () => void;
-}) {
+function ErrorFallback({ resetErrorBoundary }: FallbackProps) {
 	return (
 		<div {...stylex.props(styles.row)}>
 			<Eye {...stylex.props(styles.eye)} aria-hidden="true" />

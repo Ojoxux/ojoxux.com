@@ -2,12 +2,11 @@
 
 import * as stylex from "@stylexjs/stylex";
 import { PartyPopper } from "lucide-react";
-import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import type { ReactNode, UIEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import Fireworks from "./birthday/Fireworks";
 import { resolveBirthdayMode } from "./birthday/mode";
 import Profile from "./Profile";
-import SectionDivider from "./SectionDivider";
 import VisitorCounter from "./VisitorCounter";
 
 type HomeClientProps = {
@@ -15,16 +14,32 @@ type HomeClientProps = {
 	writingListSlot: ReactNode;
 };
 
+const columnLabels = ["Profile", "WakaTime", "Writing"];
+
 export default function HomeClient({
 	wakaTimeSlot,
 	writingListSlot,
 }: HomeClientProps) {
 	const [birthdayMode, setBirthdayMode] = useState(false);
 	const [showFireworks, setShowFireworks] = useState(true);
+	const [activeColumn, setActiveColumn] = useState(0);
+	const mainRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		setBirthdayMode(resolveBirthdayMode(new Date()));
 	}, []);
+
+	const handleScroll = (event: UIEvent<HTMLElement>) => {
+		const el = event.currentTarget;
+		if (el.clientWidth === 0) return;
+		setActiveColumn(Math.round(el.scrollLeft / el.clientWidth));
+	};
+
+	const scrollToColumn = (index: number) => {
+		const el = mainRef.current;
+		if (!el) return;
+		el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
+	};
 
 	return (
 		<div {...stylex.props(styles.root)}>
@@ -33,7 +48,11 @@ export default function HomeClient({
 			</div>
 
 			<div {...stylex.props(styles.container)}>
-				<main {...stylex.props(styles.main)}>
+				<main
+					ref={mainRef}
+					onScroll={handleScroll}
+					{...stylex.props(styles.main)}
+				>
 					<div {...stylex.props(styles.profileColumn)}>
 						<div {...stylex.props(styles.profileContent)}>
 							<Profile />
@@ -65,16 +84,10 @@ export default function HomeClient({
 						</div>
 					</div>
 					<div {...stylex.props(styles.panel)}>
-						<div {...stylex.props(styles.mobileDivider)}>
-							<SectionDivider />
-						</div>
 						<div {...stylex.props(styles.verticalDivider)} />
 						<div {...stylex.props(styles.panelContent)}>{wakaTimeSlot}</div>
 					</div>
 					<div {...stylex.props(styles.panel)}>
-						<div {...stylex.props(styles.mobileDivider)}>
-							<SectionDivider />
-						</div>
 						<div {...stylex.props(styles.verticalDivider)} />
 						<div
 							{...stylex.props(styles.verticalDivider, styles.rightDivider)}
@@ -82,6 +95,21 @@ export default function HomeClient({
 						<div {...stylex.props(styles.panelContent)}>{writingListSlot}</div>
 					</div>
 				</main>
+				<nav {...stylex.props(styles.scrollGuide)} aria-label="セクション">
+					{columnLabels.map((label, index) => (
+						<button
+							key={label}
+							type="button"
+							onClick={() => scrollToColumn(index)}
+							aria-label={`${label}へ移動`}
+							aria-current={activeColumn === index ? "true" : undefined}
+							{...stylex.props(
+								styles.scrollGuideDot,
+								activeColumn === index && styles.scrollGuideDotActive,
+							)}
+						/>
+					))}
+				</nav>
 			</div>
 		</div>
 	);
@@ -110,21 +138,44 @@ const styles = stylex.create({
 	main: {
 		display: "grid",
 		gridTemplateColumns: {
-			default: "1fr",
+			default: "none",
 			[desktop]: "1fr 1.1fr 1.2fr",
 		},
-		gap: {
-			default: 32,
-			[desktop]: 0,
+		gridAutoFlow: {
+			default: "column",
+			[desktop]: "row",
+		},
+		gridAutoColumns: {
+			default: "100%",
+			[desktop]: "auto",
+		},
+		gridAutoRows: {
+			default: "100%",
+			[desktop]: "auto",
+		},
+		gap: 0,
+		overflowX: {
+			default: "auto",
+			[desktop]: "visible",
+		},
+		overflowY: {
+			default: "hidden",
+			[desktop]: "visible",
+		},
+		overscrollBehaviorX: "contain",
+		scrollSnapType: {
+			default: "x mandatory",
+			[desktop]: "none",
 		},
 		height: {
-			default: "auto",
+			default: "100dvh",
 			[desktop]: "100vh",
 		},
 	},
 	profileColumn: {
 		display: "flex",
 		width: "100%",
+		minWidth: 0,
 		flexDirection: "column",
 		gap: 24,
 		paddingTop: 64,
@@ -141,16 +192,17 @@ const styles = stylex.create({
 			[desktop]: 0,
 		},
 		height: {
-			default: "auto",
+			default: "100%",
 			[desktop]: "100vh",
 		},
 		minHeight: {
 			default: "auto",
 			[desktop]: 0,
 		},
-		overflowY: {
-			default: "visible",
-			[desktop]: "auto",
+		overflowY: "auto",
+		scrollSnapAlign: {
+			default: "start",
+			[desktop]: "none",
 		},
 	},
 	profileContent: {
@@ -208,23 +260,14 @@ const styles = stylex.create({
 	},
 	panel: {
 		position: "relative",
-		height: {
-			default: "auto",
-			[desktop]: "100%",
-		},
+		minWidth: 0,
+		height: "100%",
 		minHeight: {
 			default: "auto",
 			[desktop]: 0,
 		},
-	},
-	mobileDivider: {
-		position: "absolute",
-		top: 0,
-		right: 0,
-		left: 0,
-		pointerEvents: "none",
-		display: {
-			default: "block",
+		scrollSnapAlign: {
+			default: "start",
 			[desktop]: "none",
 		},
 	},
@@ -236,25 +279,48 @@ const styles = stylex.create({
 		width: 1,
 		backgroundColor: "rgba(255, 255, 255, 0.1)",
 		pointerEvents: "none",
+		display: "block",
+	},
+	rightDivider: {
+		right: 0,
+		left: "auto",
 		display: {
 			default: "none",
 			[desktop]: "block",
 		},
 	},
-	rightDivider: {
-		right: 0,
-		left: "auto",
-	},
 	panelContent: {
 		paddingInline: 32,
 		paddingBlock: 64,
-		height: {
-			default: "auto",
-			[desktop]: "100%",
+		height: "100%",
+		overflowY: "auto",
+	},
+	scrollGuide: {
+		position: "fixed",
+		bottom: 20,
+		left: 0,
+		right: 0,
+		display: {
+			default: "flex",
+			[desktop]: "none",
 		},
-		overflowY: {
-			default: "visible",
-			[desktop]: "auto",
-		},
+		justifyContent: "center",
+		gap: 10,
+		pointerEvents: "none",
+	},
+	scrollGuideDot: {
+		width: 7,
+		height: 7,
+		padding: 0,
+		borderRadius: 9999,
+		borderWidth: 0,
+		backgroundColor: "rgba(255, 255, 255, 0.25)",
+		pointerEvents: "auto",
+		transitionProperty: "background-color, width",
+		transitionDuration: "200ms",
+	},
+	scrollGuideDotActive: {
+		width: 18,
+		backgroundColor: "rgba(255, 255, 255, 0.75)",
 	},
 });
