@@ -7,6 +7,10 @@ allowBuilds:
   sharp: true
   workerd: true
 
+# 公開直後のパッケージを取り込まない安全床（分）。Renovate 側は 3 日待つが、
+# ここは意図的に短くして lockfile 再解決時の transitive 依存が違反になる余地を減らす。
+minimumReleaseAge: 1440
+
 minimumReleaseAgeExclude:
   - '@stylexswc/nextjs-plugin@0.18.6'
   - '@stylexswc/plugin-shared@0.18.6'
