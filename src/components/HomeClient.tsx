@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import Fireworks from "./birthday/Fireworks";
 import { resolveBirthdayMode } from "./birthday/mode";
 import Profile from "./Profile";
-import SectionDivider from "./SectionDivider";
 import VisitorCounter from "./VisitorCounter";
 
 type HomeClientProps = {
@@ -65,16 +64,10 @@ export default function HomeClient({
 						</div>
 					</div>
 					<div {...stylex.props(styles.panel)}>
-						<div {...stylex.props(styles.mobileDivider)}>
-							<SectionDivider />
-						</div>
 						<div {...stylex.props(styles.verticalDivider)} />
 						<div {...stylex.props(styles.panelContent)}>{wakaTimeSlot}</div>
 					</div>
 					<div {...stylex.props(styles.panel)}>
-						<div {...stylex.props(styles.mobileDivider)}>
-							<SectionDivider />
-						</div>
 						<div {...stylex.props(styles.verticalDivider)} />
 						<div
 							{...stylex.props(styles.verticalDivider, styles.rightDivider)}
@@ -110,21 +103,44 @@ const styles = stylex.create({
 	main: {
 		display: "grid",
 		gridTemplateColumns: {
-			default: "1fr",
+			default: "none",
 			[desktop]: "1fr 1.1fr 1.2fr",
 		},
-		gap: {
-			default: 32,
-			[desktop]: 0,
+		gridAutoFlow: {
+			default: "column",
+			[desktop]: "row",
+		},
+		gridAutoColumns: {
+			default: "85%",
+			[desktop]: "auto",
+		},
+		gridAutoRows: {
+			default: "100%",
+			[desktop]: "auto",
+		},
+		gap: 0,
+		overflowX: {
+			default: "auto",
+			[desktop]: "visible",
+		},
+		overflowY: {
+			default: "hidden",
+			[desktop]: "visible",
+		},
+		overscrollBehaviorX: "contain",
+		scrollSnapType: {
+			default: "x mandatory",
+			[desktop]: "none",
 		},
 		height: {
-			default: "auto",
+			default: "100dvh",
 			[desktop]: "100vh",
 		},
 	},
 	profileColumn: {
 		display: "flex",
 		width: "100%",
+		minWidth: 0,
 		flexDirection: "column",
 		gap: 24,
 		paddingTop: 64,
@@ -141,16 +157,17 @@ const styles = stylex.create({
 			[desktop]: 0,
 		},
 		height: {
-			default: "auto",
+			default: "100%",
 			[desktop]: "100vh",
 		},
 		minHeight: {
 			default: "auto",
 			[desktop]: 0,
 		},
-		overflowY: {
-			default: "visible",
-			[desktop]: "auto",
+		overflowY: "auto",
+		scrollSnapAlign: {
+			default: "start",
+			[desktop]: "none",
 		},
 	},
 	profileContent: {
@@ -208,23 +225,14 @@ const styles = stylex.create({
 	},
 	panel: {
 		position: "relative",
-		height: {
-			default: "auto",
-			[desktop]: "100%",
-		},
+		minWidth: 0,
+		height: "100%",
 		minHeight: {
 			default: "auto",
 			[desktop]: 0,
 		},
-	},
-	mobileDivider: {
-		position: "absolute",
-		top: 0,
-		right: 0,
-		left: 0,
-		pointerEvents: "none",
-		display: {
-			default: "block",
+		scrollSnapAlign: {
+			default: "start",
 			[desktop]: "none",
 		},
 	},
@@ -236,25 +244,20 @@ const styles = stylex.create({
 		width: 1,
 		backgroundColor: "rgba(255, 255, 255, 0.1)",
 		pointerEvents: "none",
+		display: "block",
+	},
+	rightDivider: {
+		right: 0,
+		left: "auto",
 		display: {
 			default: "none",
 			[desktop]: "block",
 		},
 	},
-	rightDivider: {
-		right: 0,
-		left: "auto",
-	},
 	panelContent: {
 		paddingInline: 32,
 		paddingBlock: 64,
-		height: {
-			default: "auto",
-			[desktop]: "100%",
-		},
-		overflowY: {
-			default: "visible",
-			[desktop]: "auto",
-		},
+		height: "100%",
+		overflowY: "auto",
 	},
 });
