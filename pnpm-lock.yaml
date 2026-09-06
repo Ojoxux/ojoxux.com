@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@mcrovero/effect-nextjs':
-        specifier: ^0.31.0
-        version: 0.31.0(effect@3.19.15)(next@16.2.12(@babel/core@7.29.7(supports-color@10.2.2))(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
+        specifier: ^0.32.0
+        version: 0.32.0(effect@3.19.15)(next@16.2.12(@babel/core@7.29.7(supports-color@10.2.2))(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@stylexjs/stylex':
         specifier: ^0.19.0
         version: 0.19.0
@@ -1013,10 +1013,10 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@mcrovero/effect-nextjs@0.31.0':
-    resolution: {integrity: sha512-WPF6JVsU6a6smRRpaA63mVZCP25rUt0XMZvS2nq9+uAMt9L2efpBEXlQOr984YirwufZspf1fiYqQs6uRZfLNw==}
+  '@mcrovero/effect-nextjs@0.32.0':
+    resolution: {integrity: sha512-5/KIB7TmziBJ1ASZpG61bKxlR27wLtK+epl+zssJpjDiollY/nJxAqsrEaLaaj2UtRYD9dG3pNGaLwQ08iQEZA==}
     peerDependencies:
-      effect: ^3
+      effect: '>=3.20.0 <4'
       next: ^15 || ^16
 
   '@next/env@16.2.12':
@@ -3739,7 +3739,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@mcrovero/effect-nextjs@0.31.0(effect@3.19.15)(next@16.2.12(@babel/core@7.29.7(supports-color@10.2.2))(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
+  '@mcrovero/effect-nextjs@0.32.0(effect@3.19.15)(next@16.2.12(@babel/core@7.29.7(supports-color@10.2.2))(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
     dependencies:
       effect: 3.19.15
       next: 16.2.12(@babel/core@7.29.7(supports-color@10.2.2))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
