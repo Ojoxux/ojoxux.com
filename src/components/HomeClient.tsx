@@ -2,8 +2,8 @@
 
 import * as stylex from "@stylexjs/stylex";
 import { PartyPopper } from "lucide-react";
-import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import type { ReactNode, UIEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import Fireworks from "./birthday/Fireworks";
 import { resolveBirthdayMode } from "./birthday/mode";
 import Profile from "./Profile";
@@ -14,16 +14,32 @@ type HomeClientProps = {
 	writingListSlot: ReactNode;
 };
 
+const columnLabels = ["Profile", "WakaTime", "Writing"];
+
 export default function HomeClient({
 	wakaTimeSlot,
 	writingListSlot,
 }: HomeClientProps) {
 	const [birthdayMode, setBirthdayMode] = useState(false);
 	const [showFireworks, setShowFireworks] = useState(true);
+	const [activeColumn, setActiveColumn] = useState(0);
+	const mainRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		setBirthdayMode(resolveBirthdayMode(new Date()));
 	}, []);
+
+	const handleScroll = (event: UIEvent<HTMLElement>) => {
+		const el = event.currentTarget;
+		if (el.clientWidth === 0) return;
+		setActiveColumn(Math.round(el.scrollLeft / el.clientWidth));
+	};
+
+	const scrollToColumn = (index: number) => {
+		const el = mainRef.current;
+		if (!el) return;
+		el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
+	};
 
 	return (
 		<div {...stylex.props(styles.root)}>
@@ -32,7 +48,11 @@ export default function HomeClient({
 			</div>
 
 			<div {...stylex.props(styles.container)}>
-				<main {...stylex.props(styles.main)}>
+				<main
+					ref={mainRef}
+					onScroll={handleScroll}
+					{...stylex.props(styles.main)}
+				>
 					<div {...stylex.props(styles.profileColumn)}>
 						<div {...stylex.props(styles.profileContent)}>
 							<Profile />
@@ -75,6 +95,21 @@ export default function HomeClient({
 						<div {...stylex.props(styles.panelContent)}>{writingListSlot}</div>
 					</div>
 				</main>
+				<nav {...stylex.props(styles.scrollGuide)} aria-label="セクション">
+					{columnLabels.map((label, index) => (
+						<button
+							key={label}
+							type="button"
+							onClick={() => scrollToColumn(index)}
+							aria-label={`${label}へ移動`}
+							aria-current={activeColumn === index ? "true" : undefined}
+							{...stylex.props(
+								styles.scrollGuideDot,
+								activeColumn === index && styles.scrollGuideDotActive,
+							)}
+						/>
+					))}
+				</nav>
 			</div>
 		</div>
 	);
@@ -111,7 +146,7 @@ const styles = stylex.create({
 			[desktop]: "row",
 		},
 		gridAutoColumns: {
-			default: "85%",
+			default: "100%",
 			[desktop]: "auto",
 		},
 		gridAutoRows: {
@@ -259,5 +294,33 @@ const styles = stylex.create({
 		paddingBlock: 64,
 		height: "100%",
 		overflowY: "auto",
+	},
+	scrollGuide: {
+		position: "fixed",
+		bottom: 20,
+		left: 0,
+		right: 0,
+		display: {
+			default: "flex",
+			[desktop]: "none",
+		},
+		justifyContent: "center",
+		gap: 10,
+		pointerEvents: "none",
+	},
+	scrollGuideDot: {
+		width: 7,
+		height: 7,
+		padding: 0,
+		borderRadius: 9999,
+		borderWidth: 0,
+		backgroundColor: "rgba(255, 255, 255, 0.25)",
+		pointerEvents: "auto",
+		transitionProperty: "background-color, width",
+		transitionDuration: "200ms",
+	},
+	scrollGuideDotActive: {
+		width: 18,
+		backgroundColor: "rgba(255, 255, 255, 0.75)",
 	},
 });
