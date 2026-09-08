@@ -66,6 +66,7 @@ export async function getWakaTimeActivity(): Promise<WakaTimeActivity> {
 			headers: {
 				Authorization: `Basic ${btoa(apiKey)}`,
 			},
+			next: { revalidate: 3600 },
 		});
 
 		if (!response.ok) {

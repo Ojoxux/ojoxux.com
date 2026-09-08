@@ -16,6 +16,12 @@
       "migrations_dir": "migrations/d1"
     }
   ],
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "ojoxux-com-inc-cache"
+    }
+  ],
   "observability": {
     "enabled": true
   }
