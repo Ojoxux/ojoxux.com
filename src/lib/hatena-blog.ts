@@ -35,7 +35,7 @@ function extractOgImage(html: string): string | undefined {
 
 async function fetchOgImage(url: string): Promise<string | undefined> {
 	try {
-		const response = await fetch(url);
+		const response = await fetch(url, { next: { revalidate: 86400 } });
 
 		if (!response.ok) {
 			return undefined;
@@ -64,7 +64,9 @@ function formatDate(rawDate: string): string {
 
 export async function getLatestBlogPosts(limit: number): Promise<BlogPost[]> {
 	try {
-		const response = await fetch(HATENA_BLOG_RSS_URL);
+		const response = await fetch(HATENA_BLOG_RSS_URL, {
+			next: { revalidate: 1800 },
+		});
 
 		if (!response.ok) {
 			throw new Error(`Hatena Blog RSS responded with ${response.status}`);
