@@ -15,5 +15,11 @@
       "database_id": "a5aaeeae-f279-4249-b148-853f54b9a93a",
       "migrations_dir": "migrations/d1"
     }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "ojoxux-com-inc-cache-staging"
+    }
   ]
 }
