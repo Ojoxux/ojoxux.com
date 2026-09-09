@@ -20,7 +20,16 @@ export default function Profile() {
 			</div>
 			<div {...stylex.props(styles.titleRow)}>
 				<Link href="/" {...stylex.props(styles.homeLink)}>
-					<h1 {...stylex.props(styles.title)}>Ojoxux</h1>
+					<h1 {...stylex.props(styles.title)}>
+						<span {...stylex.props(styles.flipScene)}>
+							<span {...stylex.props(styles.flipInner)}>
+								<span {...stylex.props(styles.flipFace)}>Ojoxux</span>
+								<span {...stylex.props(styles.flipFace, styles.flipFaceBack)}>
+									Jou Okuyama
+								</span>
+							</span>
+						</span>
+					</h1>
 				</Link>
 				<span {...stylex.props(styles.hatenaStar)}>
 					<HatenaStar />
@@ -79,6 +88,32 @@ const styles = stylex.create({
 		lineHeight: "2.5rem",
 		fontWeight: 700,
 		letterSpacing: "0.025em",
+	},
+	flipScene: {
+		display: "inline-block",
+		perspective: "600px",
+	},
+	flipInner: {
+		display: "inline-grid",
+		transformStyle: "preserve-3d",
+		transitionProperty: "transform",
+		transitionDuration: {
+			default: "0.6s",
+			"@media (prefers-reduced-motion: reduce)": "0.01s",
+		},
+		transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+		transform: {
+			default: "rotateX(0deg)",
+			":hover": "rotateX(-180deg)",
+		},
+	},
+	flipFace: {
+		gridArea: "1 / 1",
+		backfaceVisibility: "hidden",
+		whiteSpace: "nowrap",
+	},
+	flipFaceBack: {
+		transform: "rotateX(180deg)",
 	},
 	hatenaStar: {
 		display: "inline-flex",
