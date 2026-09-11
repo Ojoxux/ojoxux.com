@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import Image from "next/image";
 import Link from "next/link";
+import FlipName from "./FlipName";
 import HatenaStar from "./HatenaStar";
 import SectionDivider from "./SectionDivider";
 import SocialLinks from "./SocialLinks";
@@ -20,7 +21,9 @@ export default function Profile() {
 			</div>
 			<div {...stylex.props(styles.titleRow)}>
 				<Link href="/" {...stylex.props(styles.homeLink)}>
-					<h1 {...stylex.props(styles.title)}>Ojoxux</h1>
+					<h1 {...stylex.props(styles.title)}>
+						<FlipName front="Ojoxux" back="Jou Okuyama" />
+					</h1>
 				</Link>
 				<span {...stylex.props(styles.hatenaStar)}>
 					<HatenaStar />
