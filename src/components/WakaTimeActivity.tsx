@@ -1,5 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import type { WakaTimeActivity as WakaTimeActivityData } from "@/lib/wakatime";
+import SectionHeading from "./SectionHeading";
 
 const ROW_BLOCKS = 10;
 
@@ -21,7 +22,7 @@ export default function WakaTimeActivity({
 	return (
 		<div {...stylex.props(styles.root)}>
 			<div {...stylex.props(styles.headingGroup)}>
-				<h2 {...stylex.props(styles.sectionHeading)}>Activity</h2>
+				<SectionHeading>Activity</SectionHeading>
 				<p {...stylex.props(styles.total)}>
 					<span>{totalText}</span>
 					{rangeText && (
@@ -65,22 +66,13 @@ const styles = stylex.create({
 	root: {
 		display: "flex",
 		flexDirection: "column",
-		gap: 20,
+		gap: 16,
 		color: "#fff",
 	},
 	headingGroup: {
 		display: "flex",
 		flexDirection: "column",
 		gap: 4,
-	},
-	sectionHeading: {
-		margin: 0,
-		fontSize: "0.875rem",
-		lineHeight: "1.25rem",
-		fontWeight: "inherit",
-		textTransform: "uppercase",
-		letterSpacing: "0.05em",
-		color: "rgba(255, 255, 255, 0.5)",
 	},
 	total: {
 		margin: 0,
