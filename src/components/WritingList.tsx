@@ -1,5 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import type { BlogPost } from "@/lib/hatena-blog";
+import SectionHeading from "./SectionHeading";
 
 export default function WritingList({ posts }: { posts: BlogPost[] }) {
 	if (posts.length === 0) {
@@ -8,7 +9,7 @@ export default function WritingList({ posts }: { posts: BlogPost[] }) {
 
 	return (
 		<div {...stylex.props(styles.root)}>
-			<h2 {...stylex.props(styles.sectionHeading)}>Posts</h2>
+			<SectionHeading>Posts</SectionHeading>
 			<ul {...stylex.props(styles.list)}>
 				{posts.map((post) => (
 					<li key={post.link}>
@@ -45,17 +46,8 @@ const styles = stylex.create({
 	root: {
 		display: "flex",
 		flexDirection: "column",
-		gap: 28,
+		gap: 16,
 		color: "#fff",
-	},
-	sectionHeading: {
-		margin: 0,
-		fontSize: "0.875rem",
-		lineHeight: "1.25rem",
-		fontWeight: "inherit",
-		textTransform: "uppercase",
-		letterSpacing: "0.05em",
-		color: "rgba(255, 255, 255, 0.5)",
 	},
 	list: {
 		display: "flex",

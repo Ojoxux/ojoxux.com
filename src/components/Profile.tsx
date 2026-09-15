@@ -4,7 +4,10 @@ import Link from "next/link";
 import FlipName from "./FlipName";
 import HatenaStar from "./HatenaStar";
 import SectionDivider from "./SectionDivider";
+import SectionHeading from "./SectionHeading";
 import SocialLinks from "./SocialLinks";
+
+const desktop = "@media (min-width: 640px)";
 
 export default function Profile() {
 	return (
@@ -25,9 +28,6 @@ export default function Profile() {
 						<FlipName front="Ojoxux" back="Jou Okuyama" />
 					</h1>
 				</Link>
-				<span {...stylex.props(styles.hatenaStar)}>
-					<HatenaStar />
-				</span>
 			</div>
 			<span {...stylex.props(styles.identifier)}>
 				44112f7c-1326-47f3-bea8-138e5ac9f02d
@@ -35,11 +35,14 @@ export default function Profile() {
 			<p {...stylex.props(styles.bio)}>
 				しがないWebエンジニア．最近は関数型言語に関心がある．
 			</p>
+			<div {...stylex.props(styles.hatenaStar)}>
+				<HatenaStar />
+			</div>
 			<div {...stylex.props(styles.profileDivider)}>
 				<SectionDivider wavelength={32} amplitude={5} speed={2.5} />
 			</div>
 			<div {...stylex.props(styles.links)}>
-				<h2 {...stylex.props(styles.sectionHeading)}>Links</h2>
+				<SectionHeading>Links</SectionHeading>
 				<SocialLinks />
 			</div>
 		</div>
@@ -69,7 +72,6 @@ const styles = stylex.create({
 	titleRow: {
 		display: "flex",
 		alignItems: "center",
-		gap: 12,
 		marginTop: 24,
 	},
 	homeLink: {
@@ -85,9 +87,10 @@ const styles = stylex.create({
 	},
 	hatenaStar: {
 		display: "inline-flex",
+		alignSelf: "flex-start",
 		height: 32,
 		alignItems: "center",
-		justifyContent: "center",
+		marginTop: 12,
 	},
 	identifier: {
 		marginTop: 8,
@@ -105,20 +108,32 @@ const styles = stylex.create({
 		color: "rgba(255, 255, 255, 0.7)",
 	},
 	profileDivider: {
-		marginBlock: 20,
-		marginInline: -32,
+		marginTop: {
+			default: 20,
+			[desktop]: 32,
+		},
+		marginBottom: 32,
+		marginInline: {
+			default: 0,
+			[desktop]: -32,
+		},
+		position: "relative",
+		left: {
+			default: "50%",
+			[desktop]: "auto",
+		},
+		width: {
+			default: "100vw",
+			[desktop]: "auto",
+		},
+		transform: {
+			default: "translateX(-50%)",
+			[desktop]: "none",
+		},
 	},
 	links: {
 		display: "flex",
 		flexDirection: "column",
 		gap: 16,
-	},
-	sectionHeading: {
-		margin: 0,
-		fontSize: "0.875rem",
-		lineHeight: "1.25rem",
-		fontWeight: 600,
-		letterSpacing: "0.025em",
-		color: "rgba(255, 255, 255, 0.6)",
 	},
 });
