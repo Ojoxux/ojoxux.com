@@ -26,7 +26,6 @@ export async function incrementVisitorCount(): Promise<VisitorCountResult> {
 					console.error("Error incrementing visitor count:", error);
 				}),
 			),
-			Effect.catchAll(() => Effect.succeed({ count: 1 })),
 		),
 	);
 }
