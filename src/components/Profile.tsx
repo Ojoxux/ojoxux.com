@@ -33,7 +33,8 @@ export default function Profile() {
 				44112f7c-1326-47f3-bea8-138e5ac9f02d
 			</span>
 			<p {...stylex.props(styles.bio)}>
-				しがないWebエンジニア．最近は関数型言語に関心がある．
+				Web engineer. Into functional programming lately, mostly playing around
+				with Haskell. Also love movies, especially sci-fi and action.
 			</p>
 			<div {...stylex.props(styles.hatenaStar)}>
 				<HatenaStar />
