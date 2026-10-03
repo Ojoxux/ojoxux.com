@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import Image from "next/image";
-import type { ComponentType, SVGProps } from "react";
+import type { ComponentProps, ComponentType } from "react";
 import { GithubIcon, XIcon, ZennIcon } from "./icons";
 
 const desktop = "@media (min-width: 640px)";
@@ -10,7 +10,7 @@ type SocialLink =
 			label: string;
 			account: string;
 			href: string;
-			icon: ComponentType<SVGProps<SVGSVGElement>>;
+			icon: ComponentType<ComponentProps<"svg">>;
 	  }
 	| {
 			label: string;

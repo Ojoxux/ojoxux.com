@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import "../styles.css";
 
 export const metadata: Metadata = {
@@ -14,11 +15,7 @@ export const viewport = {
 	initialScale: 1,
 };
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en">
 			<body>{children}</body>
