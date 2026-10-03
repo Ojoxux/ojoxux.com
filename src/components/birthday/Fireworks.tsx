@@ -1,7 +1,7 @@
 "use client";
 
 import * as stylex from "@stylexjs/stylex";
-import { useEffect, useRef } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 import { startShow } from "./fireworks/engine";
 
 // 実サイズの 1/3 で保持し、CSS で拡大してドット感を出す
@@ -15,8 +15,7 @@ export default function Fireworks({ onComplete }: FireworksProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const trailRef = useRef<HTMLCanvasElement>(null);
 	const sharpRef = useRef<HTMLCanvasElement>(null);
-	const onCompleteRef = useRef(onComplete);
-	onCompleteRef.current = onComplete;
+	const handleComplete = useEffectEvent(() => onComplete?.());
 
 	// 依存配列は空。ショーは 1 回きりの再生なので props の変化で再起動させない
 	useEffect(() => {
@@ -50,7 +49,7 @@ export default function Fireworks({ onComplete }: FireworksProps) {
 			sharpCtx,
 			initial.width,
 			initial.height,
-			() => onCompleteRef.current?.(),
+			() => handleComplete(),
 		);
 
 		const handleResize = (): void => {
