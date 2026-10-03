@@ -43,7 +43,7 @@ export default function HomeClient({
 									<div {...stylex.props(styles.birthdayControls)}>
 										<button
 											type="button"
-											onClick={() => setShowFireworks(!showFireworks)}
+											onClick={() => setShowFireworks((visible) => !visible)}
 											{...stylex.props(styles.toggleButton)}
 											aria-label={showFireworks ? "花火を非表示" : "花火を表示"}
 										>
