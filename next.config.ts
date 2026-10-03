@@ -6,7 +6,9 @@ const nextConfig: NextConfig = withStylexTurbopack({
   rsOptions: {
     dev: process.env.NODE_ENV === 'development',
   },
-})({})
+})({
+  reactCompiler: true,
+})
 
 export default nextConfig
 
