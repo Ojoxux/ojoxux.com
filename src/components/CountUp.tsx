@@ -1,5 +1,5 @@
 import { useInView, useMotionValue, useSpring } from "motion/react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useEffectEvent, useRef } from "react";
 
 interface CountUpProps {
 	to: number;
@@ -25,6 +25,8 @@ export default function CountUp({
 	onEnd,
 }: CountUpProps) {
 	const ref = useRef<HTMLSpanElement>(null);
+	const handleStart = useEffectEvent(() => onStart?.());
+	const handleEnd = useEffectEvent(() => onEnd?.());
 	const motionValue = useMotionValue(direction === "down" ? to : from);
 
 	const damping = 20 + 40 * (1 / duration);
@@ -79,9 +81,7 @@ export default function CountUp({
 
 	useEffect(() => {
 		if (isInView && startWhen) {
-			if (typeof onStart === "function") {
-				onStart();
-			}
+			handleStart();
 
 			const timeoutId = setTimeout(() => {
 				motionValue.set(direction === "down" ? from : to);
@@ -89,9 +89,7 @@ export default function CountUp({
 
 			const durationTimeoutId = setTimeout(
 				() => {
-					if (typeof onEnd === "function") {
-						onEnd();
-					}
+					handleEnd();
 				},
 				delay * 1000 + duration * 1000,
 			);
@@ -101,18 +99,7 @@ export default function CountUp({
 				clearTimeout(durationTimeoutId);
 			};
 		}
-	}, [
-		isInView,
-		startWhen,
-		motionValue,
-		direction,
-		from,
-		to,
-		delay,
-		onStart,
-		onEnd,
-		duration,
-	]);
+	}, [isInView, startWhen, motionValue, direction, from, to, delay, duration]);
 
 	useEffect(() => {
 		const unsubscribe = springValue.on("change", (latest: number) => {
