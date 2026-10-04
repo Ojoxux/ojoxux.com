@@ -1,5 +1,5 @@
 import { useInView, useMotionValue, useSpring } from "motion/react";
-import { useCallback, useEffect, useEffectEvent, useRef } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 
 interface CountUpProps {
 	to: number;
@@ -12,6 +12,24 @@ interface CountUpProps {
 	onStart?: () => void;
 	onEnd?: () => void;
 }
+
+const formatValue = (
+	latest: number,
+	maxDecimals: number,
+	separator: string,
+): string => {
+	const hasDecimals = maxDecimals > 0;
+
+	const options: Intl.NumberFormatOptions = {
+		useGrouping: !!separator,
+		minimumFractionDigits: hasDecimals ? maxDecimals : 0,
+		maximumFractionDigits: hasDecimals ? maxDecimals : 0,
+	};
+
+	const formattedNumber = Intl.NumberFormat("en-US", options).format(latest);
+
+	return separator ? formattedNumber.replace(/,/g, separator) : formattedNumber;
+};
 
 export default function CountUp({
 	to,
@@ -52,32 +70,15 @@ export default function CountUp({
 
 	const maxDecimals = Math.max(getDecimalPlaces(from), getDecimalPlaces(to));
 
-	const formatValue = useCallback(
-		(latest: number) => {
-			const hasDecimals = maxDecimals > 0;
-
-			const options: Intl.NumberFormatOptions = {
-				useGrouping: !!separator,
-				minimumFractionDigits: hasDecimals ? maxDecimals : 0,
-				maximumFractionDigits: hasDecimals ? maxDecimals : 0,
-			};
-
-			const formattedNumber = Intl.NumberFormat("en-US", options).format(
-				latest,
-			);
-
-			return separator
-				? formattedNumber.replace(/,/g, separator)
-				: formattedNumber;
-		},
-		[maxDecimals, separator],
-	);
-
 	useEffect(() => {
 		if (ref.current) {
-			ref.current.textContent = formatValue(direction === "down" ? to : from);
+			ref.current.textContent = formatValue(
+				direction === "down" ? to : from,
+				maxDecimals,
+				separator,
+			);
 		}
-	}, [from, to, direction, formatValue]);
+	}, [from, to, direction, maxDecimals, separator]);
 
 	useEffect(() => {
 		if (isInView && startWhen) {
@@ -104,12 +105,12 @@ export default function CountUp({
 	useEffect(() => {
 		const unsubscribe = springValue.on("change", (latest: number) => {
 			if (ref.current) {
-				ref.current.textContent = formatValue(latest);
+				ref.current.textContent = formatValue(latest, maxDecimals, separator);
 			}
 		});
 
 		return () => unsubscribe();
-	}, [springValue, formatValue]);
+	}, [springValue, maxDecimals, separator]);
 
 	return <span ref={ref} />;
 }
