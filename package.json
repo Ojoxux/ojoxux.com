@@ -9,7 +9,7 @@
 		"watch:fe": "scripts/watch-fe.sh",
 		"gen:types": "scripts/gen-types.sh",
 		"preview": "vite preview",
-		"deploy": "scripts/build.sh && wrangler deploy",
+		"deploy:prod": "WRANGLER_CONFIG=wrangler.prod.jsonc scripts/build.sh && wrangler d1 migrations apply ojoxux-com-prod-db --config wrangler.prod.jsonc --remote && wrangler deploy",
 		"test": "vitest run",
 		"test:hs": "cabal test ojoxux-api:test:api-test fe:test:fe-core-test",
 		"typecheck": "tsc -p tsconfig.json && tsc -p worker/tsconfig.json",
