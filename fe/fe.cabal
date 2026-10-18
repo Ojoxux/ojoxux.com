@@ -24,6 +24,27 @@ library fe-core
     , base  <5
     , text  >=2.0 && <2.3
 
+-- ブラウザで動く本体。WASM 専用
+executable fe
+  import:         warnings
+  hs-source-dirs: app src
+  main-is:        Main.hs
+  build-depends:
+    , base        <5
+    , fe:fe-core
+    , miso        ==1.14.*
+    , ojoxux-api
+    , text
+
+  if arch(wasm32)
+    ghc-options:
+      -no-hs-main -optl-mexec-model=reactor "-optl-Wl,--export=hs_start"
+
+    cpp-options: -DWASM
+
+  else
+    buildable: False
+
 test-suite fe-core-test
   import:         warnings
   type:           exitcode-stdio-1.0
