@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { csrf } from "hono/csrf";
 import { withCache } from "./cache";
 import type { BlogPost, VisitResult, WakaTimeActivity } from "./generated/api";
 import { fetchLatestPosts } from "./posts";
@@ -50,7 +51,8 @@ app.get("/api/posts", async (c) => {
 	return c.json<BlogPost[]>(posts ?? []);
 });
 
-app.post("/api/visit", async (c) => {
+// 旧 Server Action と同じく、別オリジンからのフォーム互換 POST でカウントを増やせないようにする
+app.post("/api/visit", csrf(), async (c) => {
 	try {
 		const count = await incrementVisitorCount(c.env.DB);
 		return c.json<VisitResult>({ count });
