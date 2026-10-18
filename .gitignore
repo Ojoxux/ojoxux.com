@@ -20,3 +20,8 @@ docs
 .superpowers/
 
 .pnpm-store
+
+# Haskell
+dist-newstyle
+dist-wasm
+fe/wasm-out
