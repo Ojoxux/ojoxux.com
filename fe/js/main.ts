@@ -2,6 +2,12 @@ import { ConsoleStdout, File, OpenFile, WASI } from "@bjorn3/browser_wasi_shim";
 import wasmUrl from "../wasm-out/fe.wasm?url";
 import ghcWasmJsffi from "../wasm-out/ghc_wasm_jsffi.js";
 import "../styles.css";
+import { createBridge } from "./bridge";
+
+// hs_start より前に登録する（Haskell 側の Init がすぐに呼ぶため）
+globalThis.ojoxux = createBridge({
+	birthdayEnv: import.meta.env.VITE_BIRTHDAY_MODE === "1",
+});
 
 type ReactorInstance = {
 	exports: {
