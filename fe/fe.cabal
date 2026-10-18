@@ -29,6 +29,10 @@ executable fe
   import:         warnings
   hs-source-dirs: app src
   main-is:        Main.hs
+  other-modules:
+    Ojoxux.Ffi
+    Ojoxux.Model
+    Ojoxux.Update
   build-depends:
     , base        <5
     , fe:fe-core
