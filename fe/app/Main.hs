@@ -13,10 +13,10 @@ main = startApp defaultEvents app
 
 app :: App Model Action
 app =
-  (component initialModel updateModel viewModel)
-    { mount = Just Init
-    , mountPoint = Just "app"
-    }
+    (component initialModel updateModel viewModel)
+        { mount = Just Init
+        , mountPoint = Just "app"
+        }
 
 #ifdef WASM
 foreign export javascript "hs_start" main :: IO ()

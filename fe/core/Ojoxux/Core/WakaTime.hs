@@ -9,4 +9,4 @@ rowBlocks = 10
 -- | パーセントをブロック数に変換する。結果は 0..rowBlocks に収める
 filledBlocks :: Double -> Int
 filledBlocks percent =
-  max 0 (min rowBlocks (roundHalfUp (percent / 100 * fromIntegral rowBlocks)))
+    max 0 (min rowBlocks (roundHalfUp (percent / 100 * fromIntegral rowBlocks)))
