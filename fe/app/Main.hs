@@ -4,15 +4,18 @@
 module Main (main) where
 
 import Miso
-import Miso.Html
+import Ojoxux.Model (Action (..), Model, initialModel)
+import Ojoxux.Update (updateModel)
+import Ojoxux.View (viewModel)
 
 main :: IO ()
 main = startApp defaultEvents app
 
-app :: App () ()
+app :: App Model Action
 app =
-  (component () (const (pure ())) (const (div_ [] [text "hello miso"])))
-    { mountPoint = Just "app"
+  (component initialModel updateModel viewModel)
+    { mount = Just Init
+    , mountPoint = Just "app"
     }
 
 #ifdef WASM

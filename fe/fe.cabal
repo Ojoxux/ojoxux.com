@@ -33,6 +33,14 @@ executable fe
     Ojoxux.Ffi
     Ojoxux.Model
     Ojoxux.Update
+    Ojoxux.View
+    Ojoxux.View.Common
+    Ojoxux.View.Icons
+    Ojoxux.View.Posts
+    Ojoxux.View.Profile
+    Ojoxux.View.Skeleton
+    Ojoxux.View.Visitor
+    Ojoxux.View.WakaTime
   build-depends:
     , base        <5
     , fe:fe-core
