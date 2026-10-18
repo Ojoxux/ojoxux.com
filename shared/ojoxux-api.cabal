@@ -17,6 +17,18 @@ library
     , base   <5
     , text   >=2.0 && <2.3
 
+executable gen-ts
+  import:         warnings
+  hs-source-dirs: gen
+  main-is:        GenTs.hs
+  build-depends:
+    , aeson-typescript  >=0.6 && <0.7
+    , base              <5
+    , ojoxux-api
+
+  if arch(wasm32)
+    buildable: False
+
 test-suite api-test
   import:         warnings
   type:           exitcode-stdio-1.0

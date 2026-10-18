@@ -6,5 +6,10 @@ allow-newer:
   all:base,
   all:template-haskell
 
+-- string-interpolate 1.0 は aeson-typescript 0.6 が使う `Proxy :: Proxy a` の補間を解釈できない
+-- aeson-typescript が string-interpolate 1.x に対応したら外す
+constraints:
+  string-interpolate <1.0
+
 package miso
   flags: +aeson
