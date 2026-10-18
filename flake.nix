@@ -40,6 +40,13 @@
               pkgs.haskellPackages.fourmolu
             ];
           };
+          # CI の hlint / fourmolu 用。WASM の GHC などを落とさずに済むよう最小限にする
+          lint = pkgs.mkShellNoCC {
+            packages = [
+              pkgs.hlint
+              pkgs.haskellPackages.fourmolu
+            ];
+          };
         }
       );
 

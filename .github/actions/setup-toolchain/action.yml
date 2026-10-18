@@ -1,0 +1,43 @@
+name: Setup toolchain
+description: pnpm / Node（ランナー上）と Nix（GHC WASM・ネイティブ GHC）を用意し、cabal のストアを復元する
+
+runs:
+  using: composite
+  steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 12
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: "24"
+        cache: "pnpm"
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: ${{ github.token }}
+
+    - name: Restore cabal store
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.ghc-wasm/.cabal
+          ~/.cabal
+          ~/.local/state/cabal
+          ~/.cache/cabal
+          dist-newstyle
+          dist-wasm
+        key: cabal-${{ runner.os }}-${{ hashFiles('flake.lock', 'cabal.project', '**/*.cabal') }}
+        restore-keys: |
+          cabal-${{ runner.os }}-
+
+    - name: Update cabal package index
+      shell: bash
+      run: nix develop --command bash -c 'cabal update && wasm32-wasi-cabal update'

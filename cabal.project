@@ -2,6 +2,9 @@ packages:
   shared
   fe
 
+-- CI を Hackage の更新に左右されないよう固定する（依存を上げるときにこの日時を進める）
+index-state: hackage.haskell.org 2026-10-18T12:24:19Z
+
 -- GHC WASM 9.14 の base / template-haskell は Hackage 上の上限より新しいため
 allow-newer:
   all:base,
