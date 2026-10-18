@@ -1,0 +1,10 @@
+packages:
+  shared
+
+-- GHC WASM 9.14 の base / template-haskell は Hackage 上の上限より新しいため
+allow-newer:
+  all:base,
+  all:template-haskell
+
+package miso
+  flags: +aeson
