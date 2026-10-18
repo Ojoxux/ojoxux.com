@@ -24,6 +24,9 @@ export default ghcWasmJsffi;
 DTS
 
 if [[ "${OPTIMIZE:-0}" == "1" ]]; then
-  wasm-opt -all -O2 "$out/fe.wasm" -o "$out/fe.wasm"
+  # binaryen の -all は compact imports も有効にするが、ブラウザはまだ読めないので外す
+  wasm-opt -all --disable-compact-imports -O2 "$out/fe.wasm" -o "$out/fe.wasm"
   wasm-tools strip -o "$out/fe.wasm" "$out/fe.wasm"
+  # 最適化後の .wasm を V8 でコンパイルできるか確かめる（ブラウザで読めない出力を早めに検出する）
+  node -e 'WebAssembly.compile(require("fs").readFileSync(process.argv[1])).catch((e) => { console.error(e.message); process.exit(1); })' "$out/fe.wasm"
 fi
