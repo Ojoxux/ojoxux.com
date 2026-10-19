@@ -7,22 +7,30 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 12
+      - uses: ./.github/actions/setup-toolchain
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: "24"
-          cache: "pnpm"
+      - name: Generate API types
+        run: nix develop --command scripts/gen-types.sh
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      # git diff は未追跡ファイルを検出しないので status --porcelain で見る
+      - name: Check generated API types are committed
+        run: test -z "$(git status --porcelain worker/src/generated)"
+
+      - name: Haskell tests
+        run: nix develop --command cabal test ojoxux-api:test:api-test fe:test:fe-core-test
+
+      - name: Worker tests
+        run: pnpm test
+
+      - name: Build WASM
+        run: nix develop --command scripts/build-wasm.sh
+
+      - name: Typecheck
+        run: pnpm typecheck
 
       - name: Build
-        run: pnpm run build
+        run: pnpm exec vite build

@@ -2,8 +2,6 @@ node_modules
 .DS_Store
 dist
 dist-ssr
-.next
-.open-next
 .direnv
 *.local
 count.txt
@@ -20,3 +18,8 @@ docs
 .superpowers/
 
 .pnpm-store
+
+# Haskell
+dist-newstyle
+dist-wasm
+fe/wasm-out

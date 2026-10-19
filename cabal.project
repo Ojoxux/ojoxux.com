@@ -1,0 +1,19 @@
+packages:
+  shared
+  fe
+
+-- CI を Hackage の更新に左右されないよう固定する（依存を上げるときにこの日時を進める）
+index-state: hackage.haskell.org 2026-10-18T12:24:19Z
+
+-- GHC WASM 9.14 の base / template-haskell は Hackage 上の上限より新しいため
+allow-newer:
+  all:base,
+  all:template-haskell
+
+-- string-interpolate 1.0 は aeson-typescript 0.6 が使う `Proxy :: Proxy a` の補間を解釈できない
+-- aeson-typescript が string-interpolate 1.x に対応したら外す
+constraints:
+  string-interpolate <1.0
+
+package miso
+  flags: +aeson
