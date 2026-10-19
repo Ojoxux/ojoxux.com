@@ -7,6 +7,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
 
@@ -26,3 +27,17 @@ jobs:
 
       - name: Run Biome lint
         run: pnpm run lint
+
+  haskell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ github.token }}
+
+      - name: Run hlint
+        run: nix develop .#lint --command hlint shared fe

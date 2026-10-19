@@ -18,8 +18,8 @@
   },
   "packageRules": [
     {
-      "description": "Group Cloudflare/OpenNext deployment tooling into a single PR",
-      "matchPackageNames": ["wrangler", "@opennextjs/cloudflare", "@cloudflare/workers-types"],
+      "description": "Group Cloudflare deployment tooling into a single PR",
+      "matchPackageNames": ["wrangler", "@cloudflare/vite-plugin", "@cloudflare/workers-types"],
       "groupName": "cloudflare tooling"
     }
   ]

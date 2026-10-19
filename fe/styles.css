@@ -1,0 +1,813 @@
+/* ---------- アニメーション ---------- */
+
+@keyframes wave-scroll {
+	from {
+		background-position-x: 0;
+	}
+	to {
+		background-position-x: calc(var(--wave-length, 24px) * -1);
+	}
+}
+
+@keyframes pulse {
+	50% {
+		opacity: 0.5;
+	}
+}
+
+/* ---------- ベース ---------- */
+
+html {
+	font-size: 100%;
+	line-height: 1.5;
+	-webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: #000;
+	font-family:
+		-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+		"Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+p {
+	margin: 0;
+}
+
+button {
+	margin: 0;
+	font: inherit;
+}
+
+img,
+svg,
+canvas {
+	display: block;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+code {
+	font-family:
+		source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* ---------- 共通 ---------- */
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+.pulse {
+	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.section-heading {
+	margin: 0;
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	font-weight: 600;
+	text-transform: capitalize;
+	letter-spacing: 0.05em;
+	color: rgba(255, 255, 255, 0.6);
+}
+
+/* SectionDivider（wavelength=24, amplitude=4, speed=2）*/
+.wave {
+	--wave-length: 24px;
+	width: 100%;
+	height: 8px;
+	background-repeat: repeat-x;
+	background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'24'%20height%3D'8'%20viewBox%3D'0%200%2024%208'%3E%3Cpath%20d%3D'M0%204%20Q%206%200%2012%204%20T%2024%204'%20fill%3D'none'%20stroke%3D'white'%20stroke-opacity%3D'0.15'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E");
+	background-size: 24px 8px;
+	animation: wave-scroll 2s linear infinite;
+}
+
+/* プロフィール下の SectionDivider（wavelength=32, amplitude=5, speed=2.5）*/
+.wave--profile {
+	--wave-length: 32px;
+	height: 10px;
+	background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'32'%20height%3D'10'%20viewBox%3D'0%200%2032%2010'%3E%3Cpath%20d%3D'M0%205%20Q%208%200%2016%205%20T%2032%205'%20fill%3D'none'%20stroke%3D'white'%20stroke-opacity%3D'0.15'%20stroke-width%3D'1.5'%2F%3E%3C%2Fsvg%3E");
+	background-size: 32px 10px;
+	animation-duration: 2.5s;
+}
+
+/* ---------- レイアウト（HomeClient）---------- */
+
+.home {
+	min-height: 100vh;
+}
+
+.home__background {
+	position: fixed;
+	inset: 0;
+	z-index: -10;
+	background-color: #000;
+	pointer-events: none;
+}
+
+.home__container {
+	width: 100%;
+	max-width: 84rem;
+}
+
+.home__main {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0;
+	overflow-x: hidden;
+	overflow-y: visible;
+	overscroll-behavior-x: contain;
+	height: auto;
+}
+
+.profile-column {
+	display: flex;
+	width: 100%;
+	min-width: 0;
+	flex-direction: column;
+	padding-top: 48px;
+	padding-bottom: 32px;
+	position: static;
+}
+
+.profile-content {
+	display: flex;
+	width: 100%;
+	max-width: 32rem;
+	flex-direction: column;
+	gap: 24px;
+	margin-inline: auto;
+	padding-inline: 32px;
+}
+
+.profile-details {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.birthday-controls {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.toggle-button {
+	padding: 8px;
+	border-radius: 9999px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	background-color: rgba(255, 255, 255, 0.05);
+	transition: background-color 150ms;
+}
+
+.toggle-button:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.party-icon {
+	width: 20px;
+	height: 20px;
+	transition: color 150ms;
+}
+
+.party-icon--active {
+	color: #fff;
+}
+
+.party-icon--inactive {
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.visitor {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.panel {
+	position: relative;
+	min-width: 0;
+	height: auto;
+}
+
+.panel__mobile-divider {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	pointer-events: none;
+	display: block;
+}
+
+.panel__vertical-divider {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 1px;
+	background-color: rgba(255, 255, 255, 0.1);
+	pointer-events: none;
+	display: none;
+}
+
+.panel__vertical-divider--right {
+	right: 0;
+	left: auto;
+}
+
+.panel__content {
+	width: 100%;
+	max-width: 32rem;
+	margin-inline: auto;
+	padding: 48px 32px;
+	height: auto;
+	overflow-y: visible;
+}
+
+@media (min-width: 640px) {
+	.home__main {
+		grid-template-columns: 25.4545rem 28rem 30.5455rem;
+		overflow-x: auto;
+		overflow-y: hidden;
+		height: 100vh;
+	}
+
+	.profile-column {
+		padding-bottom: 48px;
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		min-height: 0;
+		overflow-y: auto;
+	}
+
+	.profile-content {
+		max-width: none;
+		gap: 32px;
+	}
+
+	.panel {
+		height: 100%;
+		min-height: 0;
+	}
+
+	.panel__mobile-divider {
+		display: none;
+	}
+
+	.panel__vertical-divider {
+		display: block;
+	}
+
+	.panel__content {
+		max-width: none;
+		height: 100%;
+		overflow-y: auto;
+	}
+}
+
+/* ---------- 花火 ---------- */
+
+.fireworks {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+.fireworks canvas {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	image-rendering: pixelated;
+}
+
+/* ---------- プロフィール ---------- */
+
+.profile {
+	display: flex;
+	flex-direction: column;
+	color: #fff;
+}
+
+.profile__avatar-frame {
+	position: relative;
+	aspect-ratio: 1 / 1;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 16px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* next/image の fill と同じ配置 */
+.profile__avatar {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+	object-fit: cover;
+}
+
+.profile__title-row {
+	display: flex;
+	align-items: center;
+	margin-top: 24px;
+}
+
+.profile__home-link {
+	color: inherit;
+	text-decoration: none;
+}
+
+.profile__title {
+	margin: 0;
+	font-size: 2.25rem;
+	line-height: 2.5rem;
+	font-weight: 700;
+	letter-spacing: 0.025em;
+}
+
+.profile__identifier {
+	margin-top: 8px;
+	user-select: none;
+	font-family: monospace;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	color: rgba(255, 255, 255, 0.2);
+}
+
+.profile__bio {
+	margin-top: 16px;
+	margin-bottom: 0;
+	font-size: 1rem;
+	line-height: 1.625;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.profile__hatena-star {
+	display: inline-flex;
+	align-self: flex-start;
+	height: 32px;
+	align-items: center;
+	margin-top: 12px;
+}
+
+.profile__divider {
+	margin-top: 20px;
+	margin-bottom: 32px;
+	margin-inline: 0;
+	position: relative;
+	left: 50%;
+	width: 100vw;
+	transform: translateX(-50%);
+}
+
+.profile__links {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+@media (min-width: 640px) {
+	.profile__divider {
+		margin-top: 32px;
+		margin-inline: -32px;
+		left: auto;
+		width: auto;
+		transform: none;
+	}
+}
+
+/* ---------- FlipName ---------- */
+/* motion の easeInOut（cubic-bezier(0.42, 0, 0.58, 1)）は CSS の ease-in-out と同じ。
+   文字の入れ替えは 90 度を向く 0.25 秒付近を中心に、0.2 秒遅延 + 0.1 秒で行う。 */
+
+.flip-name {
+	display: inline-block;
+	perspective: 600px;
+	vertical-align: top;
+}
+
+.flip-name__inner {
+	display: inline-grid;
+	transform-style: preserve-3d;
+	/* 回転する要素をヒットテストから外す。これが無いと、回転で潰れた
+	   当たり判定がポインタから外れて hover が解除され、振動ループになる */
+	pointer-events: none;
+	transition: transform 0.5s ease-in-out;
+}
+
+.flip-name__face {
+	grid-area: 1 / 1;
+	white-space: nowrap;
+	transition: opacity 0.1s linear 0.2s;
+}
+
+.flip-name__face--back {
+	transform: rotateX(180deg);
+	opacity: 0;
+}
+
+/* motion の whileHover と同じく、タッチ端末のエミュレートされた hover では裏返さない */
+@media (hover: hover) {
+	.flip-name:hover .flip-name__inner {
+		transform: rotateX(-180deg);
+	}
+
+	.flip-name:hover .flip-name__face--front {
+		opacity: 0;
+	}
+
+	.flip-name:hover .flip-name__face--back {
+		opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.flip-name__inner,
+	.flip-name__face {
+		transition-duration: 0s;
+		transition-delay: 0s;
+	}
+}
+
+/* ---------- SocialLinks ---------- */
+
+.social-links {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 12px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.social-links__item {
+	display: flex;
+}
+
+.social-links__link {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	gap: 12px;
+	color: rgba(255, 255, 255, 0.7);
+	text-decoration: none;
+	transition: color 150ms;
+}
+
+.social-links__link:hover {
+	color: #fff;
+}
+
+.social-links__icon {
+	width: 28px;
+	height: 28px;
+	flex-shrink: 0;
+}
+
+.social-links__image {
+	width: 28px;
+	height: 28px;
+	flex-shrink: 0;
+	opacity: 0.7;
+	filter: invert(1);
+	transition: opacity 150ms;
+}
+
+.social-links__image:hover {
+	opacity: 1;
+}
+
+.social-links__account {
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+}
+
+@media (min-width: 640px) {
+	.social-links {
+		gap: 16px;
+	}
+}
+
+/* ---------- WakaTime ---------- */
+
+.activity {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	color: #fff;
+}
+
+.activity__heading {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.activity__total {
+	margin: 0;
+	font-size: 1.875rem;
+	line-height: 2.25rem;
+	font-weight: 700;
+	color: #fff;
+}
+
+.activity__range {
+	margin-left: 8px;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.activity__list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.activity__row {
+	display: flex;
+	align-items: center;
+}
+
+.activity__language {
+	width: 112px;
+	margin-right: 4px;
+	flex-shrink: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.activity__metrics {
+	display: flex;
+	min-width: 0;
+	flex: 1;
+	align-items: center;
+	gap: 12px;
+}
+
+.activity__blocks {
+	display: flex;
+	height: 8px;
+	min-width: 0;
+	flex: 1;
+	gap: 2px;
+}
+
+.activity__block {
+	height: 100%;
+	flex: 1;
+	border-radius: 1px;
+}
+
+.activity__block--filled {
+	background-color: rgba(255, 255, 255, 0.7);
+}
+
+.activity__block--empty {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.activity__duration {
+	min-width: 96px;
+	flex-shrink: 0;
+	white-space: nowrap;
+	text-align: right;
+	font-size: 0.75rem;
+	line-height: 1rem;
+	color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- Posts ---------- */
+
+.posts {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	color: #fff;
+}
+
+.posts__list {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.posts__link {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	color: rgba(255, 255, 255, 0.9);
+	text-decoration: none;
+}
+
+.posts__link:hover {
+	color: #fff;
+}
+
+.posts__thumbnail {
+	aspect-ratio: 16 / 9;
+	width: 100%;
+	border-radius: 2px;
+	object-fit: cover;
+	opacity: 1;
+	transition: opacity 150ms;
+}
+
+.posts__thumbnail:hover {
+	opacity: 0.8;
+}
+
+.posts__thumbnail-placeholder {
+	aspect-ratio: 16 / 9;
+	width: 100%;
+	border-radius: 2px;
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.posts__meta {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.posts__title {
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	color: inherit;
+	transition: color 150ms;
+}
+
+.posts__date {
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- Visitor ---------- */
+
+.visitor-count {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.visitor-count--ready {
+	user-select: none;
+}
+
+.visitor-count__eye {
+	width: 24px;
+	height: 24px;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.visitor-count__value {
+	font-size: 1.5rem;
+	line-height: 2rem;
+	font-weight: 700;
+	color: #fff;
+}
+
+.visitor-count__status {
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.visitor-count__error {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 1.125rem;
+	line-height: 1.75rem;
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.visitor-count__retry {
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	color: inherit;
+	text-decoration: underline;
+	transition: color 150ms;
+}
+
+.visitor-count__retry:hover {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- スケルトン（現行の Suspense fallback）---------- */
+
+.skeleton-box {
+	border-radius: 4px;
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.skeleton-heading {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.skeleton-waka {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.skeleton-waka__label {
+	width: 80px;
+	height: 20px;
+}
+
+.skeleton-waka__total {
+	width: 144px;
+	height: 28px;
+}
+
+.skeleton-waka__bar {
+	width: 100%;
+	height: 10px;
+	border-radius: 9999px;
+}
+
+.skeleton-posts {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+}
+
+.skeleton-posts__label {
+	width: 56px;
+	height: 20px;
+}
+
+.skeleton-posts__list {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.skeleton-posts__post {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.skeleton-posts__image {
+	aspect-ratio: 16 / 9;
+	width: 100%;
+	border-radius: 2px;
+}
+
+.skeleton-posts__title {
+	width: 75%;
+	height: 20px;
+}
+
+.skeleton-posts__date {
+	width: 96px;
+	height: 16px;
+}

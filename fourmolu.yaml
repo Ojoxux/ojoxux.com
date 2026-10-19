@@ -1,0 +1,5 @@
+# fourmolu 0.19 の既定に合わせて固定する（エディタや将来のバージョンで整形がぶれないように）
+indentation: 4
+comma-style: leading
+import-export-style: diff-friendly
+haddock-style: multi-line

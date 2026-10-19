@@ -1,0 +1,46 @@
+cabal-version: 3.0
+name:          ojoxux-api
+version:       0.1.0.0
+synopsis:      ojoxux.com の API 型（フロントと Worker で共有）
+build-type:    Simple
+
+common warnings
+  ghc-options:      -Wall
+  default-language: GHC2021
+
+library
+  import:          warnings
+  hs-source-dirs:  src
+  exposed-modules: Ojoxux.Api.Types
+  build-depends:
+    , aeson  >=2.2 && <2.4
+    , base   <5
+    , text   >=2.0 && <2.3
+
+executable gen-ts
+  import:         warnings
+  hs-source-dirs: gen
+  main-is:        GenTs.hs
+  build-depends:
+    , aeson-typescript  >=0.6 && <0.7
+    , base              <5
+    , ojoxux-api
+
+  if arch(wasm32)
+    buildable: False
+
+test-suite api-test
+  import:         warnings
+  type:           exitcode-stdio-1.0
+  hs-source-dirs: test
+  main-is:        Main.hs
+  build-depends:
+    , aeson
+    , base        <5
+    , bytestring
+    , hspec       >=2.11 && <2.12
+    , ojoxux-api
+    , text
+
+  if arch(wasm32)
+    buildable: False

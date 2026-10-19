@@ -1,0 +1,72 @@
+cabal-version: 3.0
+name:          fe
+version:       0.1.0.0
+synopsis:      ojoxux.com のフロントエンド（Miso / GHC WASM）
+build-type:    Simple
+
+common warnings
+  ghc-options:      -Wall
+  default-language: GHC2021
+
+-- Miso に依存しない純粋ロジック。ネイティブ GHC でテストできる
+library fe-core
+  import:          warnings
+  visibility:      private
+  hs-source-dirs:  core
+  exposed-modules:
+    Ojoxux.Core.Birthday
+    Ojoxux.Core.CountUp
+    Ojoxux.Core.Remote
+    Ojoxux.Core.Round
+    Ojoxux.Core.WakaTime
+
+  build-depends:
+    , base  <5
+    , text  >=2.0 && <2.3
+
+-- ブラウザで動く本体。WASM 専用
+executable fe
+  import:         warnings
+  hs-source-dirs: app src
+  main-is:        Main.hs
+  other-modules:
+    Ojoxux.Ffi
+    Ojoxux.Model
+    Ojoxux.Update
+    Ojoxux.View
+    Ojoxux.View.Common
+    Ojoxux.View.Icons
+    Ojoxux.View.Posts
+    Ojoxux.View.Profile
+    Ojoxux.View.Skeleton
+    Ojoxux.View.Visitor
+    Ojoxux.View.WakaTime
+  build-depends:
+    , base        <5
+    , fe:fe-core
+    , miso        ==1.14.*
+    , ojoxux-api
+    , text
+
+  if arch(wasm32)
+    ghc-options:
+      -no-hs-main -optl-mexec-model=reactor "-optl-Wl,--export=hs_start"
+
+    cpp-options: -DWASM
+
+  else
+    buildable: False
+
+test-suite fe-core-test
+  import:         warnings
+  type:           exitcode-stdio-1.0
+  hs-source-dirs: test
+  main-is:        Main.hs
+  build-depends:
+    , base     <5
+    , fe:fe-core
+    , hspec    >=2.11 && <2.12
+    , text
+
+  if arch(wasm32)
+    buildable: False
