@@ -45,7 +45,7 @@ viewModel m =
             ]
         ]
 
--- | 花火の canvas は JS 側（fe/js/fireworks/mount.ts）がこの div の中に作る
+-- | 花火の canvas は JS 側（Ojoxux.Fireworks.Loop）がこの div の中に作る
 fireworksLayer :: View () () Model Action
 fireworksLayer =
     div_ [class_ "fireworks", onCreatedWith FireworksCreated, onDestroyedWith FireworksDestroyed] []

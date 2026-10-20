@@ -1,4 +1,4 @@
-{- | 花火エンジンの型。旧 fe/js/fireworks/types.ts に対応する。
+{- | 花火エンジンの型。旧 TS 版（fe/js/fireworks/types.ts、削除済み）に対応する。
 座標と速度は canvas（実サイズの 1/3）のピクセル単位、時間は 1/60 秒のステップ単位。
 -}
 module Ojoxux.Core.Fireworks.Types (

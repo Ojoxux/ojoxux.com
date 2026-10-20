@@ -4,13 +4,10 @@
 module Ojoxux.Ffi (
     readBirthdayMode,
     prefersReducedMotion,
-    startFireworks,
-    stopFireworks,
     initHatenaStar,
 ) where
 
 import Control.Monad (void)
-import Miso (DOMRef)
 import Miso.DSL (JSVal, fromJSValUnchecked, jsg, (!), (#))
 import Miso.String (MisoString)
 import Ojoxux.Core.Birthday (resolveBirthdayMode)
@@ -23,11 +20,6 @@ call0 name = do
     b <- bridge
     (b # name) ()
 
-call1 :: MisoString -> JSVal -> IO JSVal
-call1 name arg = do
-    b <- bridge
-    (b # name) arg
-
 readBirthdayMode :: IO Bool
 readBirthdayMode = do
     facts <- call0 "birthdayFacts"
@@ -39,12 +31,6 @@ readBirthdayMode = do
 
 prefersReducedMotion :: IO Bool
 prefersReducedMotion = fromJSValUnchecked =<< call0 "prefersReducedMotion"
-
-startFireworks :: DOMRef -> IO ()
-startFireworks = void . call1 "startFireworks"
-
-stopFireworks :: DOMRef -> IO ()
-stopFireworks = void . call1 "stopFireworks"
 
 initHatenaStar :: IO ()
 initHatenaStar = void (call0 "initHatenaStar")

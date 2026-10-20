@@ -41,6 +41,8 @@ executable fe
   main-is:        Main.hs
   other-modules:
     Ojoxux.Ffi
+    Ojoxux.Fireworks.Loop
+    Ojoxux.Fireworks.Render
     Ojoxux.Model
     Ojoxux.Update
     Ojoxux.View
@@ -53,8 +55,10 @@ executable fe
     Ojoxux.View.WakaTime
   build-depends:
     , base        <5
+    , containers
     , fe:fe-core
     , miso        ==1.14.*
+    , mtl
     , ojoxux-api
     , text
 
