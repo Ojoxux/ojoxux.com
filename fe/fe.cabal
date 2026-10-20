@@ -21,6 +21,7 @@ library fe-core
     Ojoxux.Core.Fireworks.Program
     Ojoxux.Core.Fireworks.Random
     Ojoxux.Core.Fireworks.Shells
+    Ojoxux.Core.Fireworks.Stats
     Ojoxux.Core.Fireworks.Show
     Ojoxux.Core.Fireworks.Types
     Ojoxux.Core.Remote
@@ -77,6 +78,7 @@ test-suite fe-core-test
     FireworksRandomSpec
     FireworksShellsSpec
     FireworksShowSpec
+    FireworksStatsSpec
   build-depends:
     , base     <5
     , fe:fe-core

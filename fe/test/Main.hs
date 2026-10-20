@@ -7,6 +7,7 @@ import FireworksProgramSpec qualified
 import FireworksRandomSpec qualified
 import FireworksShellsSpec qualified
 import FireworksShowSpec qualified
+import FireworksStatsSpec qualified
 import Ojoxux.Core.Birthday (resolveBirthdayMode)
 import Ojoxux.Core.CountUp (countValueAt, easeOutCubic, formatWithSeparator)
 import Ojoxux.Core.Round (roundHalfUp)
@@ -79,3 +80,4 @@ main = hspec $ do
     FireworksRandomSpec.spec
     FireworksShellsSpec.spec
     FireworksShowSpec.spec
+    FireworksStatsSpec.spec
