@@ -17,6 +17,7 @@ library fe-core
     Ojoxux.Core.Birthday
     Ojoxux.Core.CountUp
     Ojoxux.Core.Fireworks.Palette
+    Ojoxux.Core.Fireworks.Particle
     Ojoxux.Core.Fireworks.Random
     Ojoxux.Core.Fireworks.Types
     Ojoxux.Core.Remote
@@ -67,7 +68,8 @@ test-suite fe-core-test
   type:           exitcode-stdio-1.0
   hs-source-dirs: test
   main-is:        Main.hs
-  other-modules:  FireworksRandomSpec
+  other-modules:  FireworksParticleSpec
+    FireworksRandomSpec
   build-depends:
     , base     <5
     , fe:fe-core

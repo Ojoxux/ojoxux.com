@@ -2,6 +2,7 @@
 
 module Main (main) where
 
+import FireworksParticleSpec qualified
 import FireworksRandomSpec qualified
 import Ojoxux.Core.Birthday (resolveBirthdayMode)
 import Ojoxux.Core.CountUp (countValueAt, easeOutCubic, formatWithSeparator)
@@ -70,4 +71,5 @@ main = hspec $ do
             filledBlocks 150 `shouldBe` 10
             filledBlocks (-5) `shouldBe` 0
 
+    FireworksParticleSpec.spec
     FireworksRandomSpec.spec
