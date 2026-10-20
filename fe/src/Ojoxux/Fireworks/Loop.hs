@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-{- | 花火のループ。旧 fe/js/fireworks/mount.ts と engine.ts のタイミング部分に対応する。
+{- | 花火のループ。旧 fe/js/fireworks/mount.ts と engine.ts（削除済み）のタイミング部分に対応する。
 花火は同時に 1 つしか出ないので、動作中のハンドルはこのモジュールの IORef 1 つに持つ
 -}
 module Ojoxux.Fireworks.Loop (

@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- | 花火の描画。Miso.Canvas で 2 枚の canvas（残光用と輪郭用）に描く
+{- | 花火の描画。粒は 1 粒につき `drawDot` の JS FFI を 1 回呼んで描く。
+Miso.Canvas は残光のフェード・消去・合成モードの設定にだけ使う
+-}
 module Ojoxux.Fireworks.Render (
     Contexts (..),
     ColorCache,
