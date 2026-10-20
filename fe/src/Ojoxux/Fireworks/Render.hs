@@ -11,12 +11,12 @@ module Ojoxux.Fireworks.Render (
     clearAll,
 ) where
 
-import Control.Monad (forM_, when)
+import Control.Monad (forM_)
 import Control.Monad.Reader (runReaderT)
-import Data.IORef (IORef, modifyIORef', newIORef, readIORef, writeIORef)
+import Data.IORef (IORef, modifyIORef', newIORef, readIORef)
 import Data.Map.Strict qualified as Map
 import Miso.Canvas (CompositeOperation (..), clearRect, fillRect, globalAlpha, globalCompositeOperation, set)
-import Miso.DSL (JSVal, setField)
+import Miso.DSL (JSVal, setField, toJSVal)
 import Miso.String (MisoString, ms)
 import Ojoxux.Core.Fireworks.Show (DrawItem (..))
 import Ojoxux.Core.Fireworks.Types (Color)
@@ -26,21 +26,27 @@ data Contexts = Contexts
     , sharpCtx :: JSVal
     }
 
--- | 色の文字列を JS 側の文字列に変換した結果を使い回す（色は十数種類しかない）
-type ColorCache = IORef (Map.Map Color MisoString)
+{- | 1 粒を描く。Miso.Canvas 経由だと 1 粒あたり 3 回の呼び出しと複数の JSVal ハンドルが要り、
+フィナーレ（約 4000 粒）で 1 フレーム 15ms かかったので、1 回の呼び出しにまとめる
+-}
+foreign import javascript unsafe "$1.globalAlpha = $2; $1.fillStyle = $3; $1.fillRect($4, $5, $6, $6);"
+    drawDot :: JSVal -> Double -> JSVal -> Double -> Double -> Double -> IO ()
+
+-- | 色の JSVal を使い回す（色は十数種類しかない）
+type ColorCache = IORef (Map.Map Color JSVal)
 
 newColorCache :: IO ColorCache
 newColorCache = newIORef Map.empty
 
-cachedColor :: ColorCache -> Color -> IO MisoString
+cachedColor :: ColorCache -> Color -> IO JSVal
 cachedColor cache c = do
     m <- readIORef cache
     case Map.lookup c m of
-        Just s -> pure s
+        Just v -> pure v
         Nothing -> do
-            let s = ms c
-            modifyIORef' cache (Map.insert c s)
-            pure s
+            v <- toJSVal (ms c)
+            modifyIORef' cache (Map.insert c v)
+            pure v
 
 -- | 加算合成にする。canvas のサイズを変えるとリセットされるので、そのたびに呼ぶ
 setComposite :: Contexts -> IO ()
@@ -57,25 +63,15 @@ fadeTrail cs w h = flip runReaderT (trailCtx cs) $ do
     globalCompositeOperation Lighter
 
 {- | 1 フレーム分の粒子を描く。
-Miso.Canvas の set / globalAlpha は値を 1 要素の配列に包んで渡すので、粒子ごとの書き込みは setField で直接行う。
-fillStyle は同じ色が続くあいだ書き直さない（フレームごとに ctx ごとの最後の色を覚える）
+粒子ごとの描画は drawDot の 1 回の JS 呼び出しにまとめる。色は cachedColor で JSVal を使い回す
 -}
 drawFrame :: ColorCache -> Contexts -> Double -> Double -> [DrawItem] -> IO ()
 drawFrame cache cs w h items = do
     runReaderT (clearRect (0, 0, w, h)) (sharpCtx cs)
-    lastTrail <- newIORef Nothing
-    lastSharp <- newIORef Nothing
     forM_ items $ \d -> do
         col <- cachedColor cache (diColor d)
-        let trail = diTrail d
-            ctx = if trail then trailCtx cs else sharpCtx cs
-            lastRef = if trail then lastTrail else lastSharp
-        setField ctx ("globalAlpha" :: MisoString) (diAlpha d)
-        prev <- readIORef lastRef
-        when (prev /= Just (diColor d)) $ do
-            setField ctx ("fillStyle" :: MisoString) col
-            writeIORef lastRef (Just (diColor d))
-        runReaderT (fillRect (diX d, diY d, diSize d, diSize d)) ctx
+        let ctx = if diTrail d then trailCtx cs else sharpCtx cs
+        drawDot ctx (diAlpha d) col (diX d) (diY d) (diSize d)
     forM_ [trailCtx cs, sharpCtx cs] (\c -> setField c ("globalAlpha" :: MisoString) (1 :: Double))
 
 clearAll :: Contexts -> Double -> Double -> IO ()
