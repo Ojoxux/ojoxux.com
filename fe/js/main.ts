@@ -26,6 +26,7 @@ async function boot(): Promise<void> {
 			ConsoleStdout.lineBuffered((msg) => console.log(`[WASI stdout] ${msg}`)),
 			ConsoleStdout.lineBuffered((msg) => console.warn(`[WASI stderr] ${msg}`)),
 		],
+		{ debug: false },
 	);
 
 	// ghc_wasm_jsffi は instance の exports を後から参照するので、先に空の入れ物を渡す
