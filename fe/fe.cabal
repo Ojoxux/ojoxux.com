@@ -16,13 +16,18 @@ library fe-core
   exposed-modules:
     Ojoxux.Core.Birthday
     Ojoxux.Core.CountUp
+    Ojoxux.Core.Fireworks.Palette
+    Ojoxux.Core.Fireworks.Random
+    Ojoxux.Core.Fireworks.Types
     Ojoxux.Core.Remote
     Ojoxux.Core.Round
     Ojoxux.Core.WakaTime
 
   build-depends:
-    , base  <5
-    , text  >=2.0 && <2.3
+    , base     <5
+    , mtl      >=2.3 && <2.4
+    , splitmix >=0.1 && <0.2
+    , text     >=2.0 && <2.3
 
 -- ブラウザで動く本体。WASM 専用
 executable fe
@@ -62,10 +67,12 @@ test-suite fe-core-test
   type:           exitcode-stdio-1.0
   hs-source-dirs: test
   main-is:        Main.hs
+  other-modules:  FireworksRandomSpec
   build-depends:
     , base     <5
     , fe:fe-core
     , hspec    >=2.11 && <2.12
+    , mtl
     , text
 
   if arch(wasm32)

@@ -2,6 +2,7 @@
 
 module Main (main) where
 
+import FireworksRandomSpec qualified
 import Ojoxux.Core.Birthday (resolveBirthdayMode)
 import Ojoxux.Core.CountUp (countValueAt, easeOutCubic, formatWithSeparator)
 import Ojoxux.Core.Round (roundHalfUp)
@@ -68,3 +69,5 @@ main = hspec $ do
         it "0..rowBlocks の範囲に収める" $ do
             filledBlocks 150 `shouldBe` 10
             filledBlocks (-5) `shouldBe` 0
+
+    FireworksRandomSpec.spec
