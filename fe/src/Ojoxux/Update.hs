@@ -11,6 +11,7 @@ import Ojoxux.Api.Types qualified as Api
 import Ojoxux.Core.CountUp (countDurationMs, countValueAt)
 import Ojoxux.Core.Remote (Remote (..))
 import Ojoxux.Ffi qualified as Ffi
+import Ojoxux.Fireworks.Loop qualified as Fireworks
 import Ojoxux.Model
 
 type AppEffect = Effect () () Model Action
@@ -64,9 +65,9 @@ updateModel = \case
     ToggleFireworks ->
         modify (\m -> m{fireworks = not m.fireworks})
     FireworksCreated ref ->
-        io_ (Ffi.startFireworks ref)
-    FireworksDestroyed ref ->
-        io_ (Ffi.stopFireworks ref)
+        io_ (Fireworks.start ref)
+    FireworksDestroyed _ ->
+        io_ Fireworks.stop
     HatenaStarCreated ->
         io_ Ffi.initHatenaStar
 

@@ -1,11 +1,7 @@
-import { mountFireworks, prefersReducedMotion } from "./fireworks/mount";
-
 // Haskell（fe/src/Ojoxux/Ffi.hs）から globalThis.ojoxux 経由で呼ぶ関数群
 export interface OjoxuxBridge {
 	birthdayFacts(): BirthdayFacts;
 	prefersReducedMotion(): boolean;
-	startFireworks(container: HTMLElement): void;
-	stopFireworks(container: HTMLElement): void;
 	initHatenaStar(): void;
 }
 
@@ -36,6 +32,10 @@ type HatenaWindow = Window & {
 };
 
 const BIRTHDAY_FLAG_KEY = "birthday";
+function prefersReducedMotion(): boolean {
+	return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 const HATENA_STAR_SRC = "https://s.hatena.ne.jp/js/HatenaStar.js";
 
 function readBirthdayFlag(): boolean {
@@ -76,8 +76,6 @@ function initHatenaStar(): void {
 }
 
 export function createBridge(options: { birthdayEnv: boolean }): OjoxuxBridge {
-	const shows = new WeakMap<HTMLElement, () => void>();
-
 	return {
 		birthdayFacts() {
 			const now = new Date();
@@ -89,22 +87,6 @@ export function createBridge(options: { birthdayEnv: boolean }): OjoxuxBridge {
 			};
 		},
 		prefersReducedMotion,
-		startFireworks(container) {
-			if (shows.has(container)) return;
-			// Miso の onCreated は要素が DOM に挿入される前に呼ばれることがあるので、1 フレーム待ってから測る
-			let stop: (() => void) | undefined;
-			const frame = requestAnimationFrame(() => {
-				stop = mountFireworks(container);
-			});
-			shows.set(container, () => {
-				cancelAnimationFrame(frame);
-				stop?.();
-			});
-		},
-		stopFireworks(container) {
-			shows.get(container)?.();
-			shows.delete(container);
-		},
 		initHatenaStar,
 	};
 }
