@@ -16,9 +16,9 @@ import Ojoxux.Model
 
 type AppEffect = Effect () () Model Action
 
--- | 現行の WritingSection と同じ件数
+-- | Worker 側の MAX_POST_LIMIT (10) を超えると 5 件に戻されるので、それ以下にする
 postLimit :: MisoString
-postLimit = "5"
+postLimit = "10"
 
 countUpSub :: MisoString
 countUpSub = "count-up"
