@@ -22,6 +22,7 @@ export const EMPTY_ACTIVITY: WakaTimeActivity = {
 const WAKATIME_STATS_URL =
 	"https://wakatime.com/api/v1/users/current/stats/last_7_days";
 const MAX_LANGUAGES = 6;
+const EXCLUDED_LANGUAGES = new Set(["Markdown", "Other"]);
 
 const DATE_RANGE_FORMATTER = new Intl.DateTimeFormat("ja-JP", {
 	timeZone: "Asia/Tokyo",
@@ -41,7 +42,10 @@ export function toActivity(json: WakaTimeStatsResponse): WakaTimeActivity {
 		rangeText: formatDateRange(json.data.start, json.data.end),
 		totalText: json.data.human_readable_total,
 		languages: json.data.languages
-			.filter((language) => language.percent > 0)
+			.filter(
+				(language) =>
+					language.percent > 0 && !EXCLUDED_LANGUAGES.has(language.name),
+			)
 			.slice(0, MAX_LANGUAGES)
 			.map((language) => ({
 				name: language.name,
