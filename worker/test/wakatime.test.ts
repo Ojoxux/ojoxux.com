@@ -42,13 +42,30 @@ describe("toActivity", () => {
 			"TypeScript",
 			"Nix",
 			"CSS",
-			"Markdown",
 			"YAML",
+			"JSON",
 		]);
 		expect(activity.languages[0]).toEqual({
 			name: "Haskell",
 			text: "40 mins",
 			percent: 40,
 		});
+	});
+
+	it("Markdown と Other は percent があっても除く", () => {
+		const activity = toActivity({
+			data: {
+				start: "2026-10-11T15:00:00Z",
+				end: "2026-10-18T14:59:59Z",
+				human_readable_total: "1 hr",
+				languages: [
+					language("Markdown", 50),
+					language("Haskell", 30),
+					language("Other", 20),
+				],
+			},
+		});
+
+		expect(activity.languages.map((l) => l.name)).toEqual(["Haskell"]);
 	});
 });
