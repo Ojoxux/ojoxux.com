@@ -4,12 +4,17 @@ import { withCache } from "./cache";
 import type { BlogPost, VisitResult, WakaTimeActivity } from "./generated/api";
 import { fetchLatestPosts } from "./posts";
 import { incrementVisitorCount } from "./visit";
-import { EMPTY_ACTIVITY, fetchWakaTimeActivity } from "./wakatime";
+import {
+	EMPTY_ACTIVITY,
+	fetchWakaTimeActivity,
+	MOCK_ACTIVITY,
+} from "./wakatime";
 
 type Bindings = {
 	DB: D1Database;
 	ASSETS: Fetcher;
-	WAKATIME_API_KEY?: string;
+	WAKATIME_ACCESS_TOKEN?: string;
+	WAKATIME_MOCK?: string;
 };
 
 const WAKATIME_TTL_SECONDS = 3600;
@@ -28,15 +33,19 @@ function parsePostLimit(raw: string | undefined): number {
 const app = new Hono<{ Bindings: Bindings }>();
 
 app.get("/api/wakatime", async (c) => {
-	const apiKey = c.env.WAKATIME_API_KEY;
+	if (c.env.WAKATIME_MOCK === "1") {
+		return c.json<WakaTimeActivity>(MOCK_ACTIVITY);
+	}
 
-	if (!apiKey) {
-		console.error("Missing required Cloudflare secret: WAKATIME_API_KEY");
+	const accessToken = c.env.WAKATIME_ACCESS_TOKEN;
+
+	if (!accessToken) {
+		console.error("Missing required Cloudflare secret: WAKATIME_ACCESS_TOKEN");
 		return c.json<WakaTimeActivity>(EMPTY_ACTIVITY);
 	}
 
 	const activity = await withCache("wakatime", WAKATIME_TTL_SECONDS, () =>
-		fetchWakaTimeActivity(apiKey),
+		fetchWakaTimeActivity(accessToken),
 	);
 
 	return c.json<WakaTimeActivity>(activity ?? EMPTY_ACTIVITY);
