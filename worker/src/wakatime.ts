@@ -19,6 +19,18 @@ export const EMPTY_ACTIVITY: WakaTimeActivity = {
 	languages: [],
 };
 
+export const MOCK_ACTIVITY: WakaTimeActivity = {
+	rangeText: "10/31 – 11/6",
+	totalText: "12 hrs 34 mins",
+	languages: [
+		{ name: "Haskell", text: "5 hrs 2 mins", percent: 40 },
+		{ name: "TypeScript", text: "3 hrs 46 mins", percent: 30 },
+		{ name: "Nix", text: "1 hr 53 mins", percent: 15 },
+		{ name: "CSS", text: "1 hr 15 mins", percent: 10 },
+		{ name: "YAML", text: "38 mins", percent: 5 },
+	],
+};
+
 const WAKATIME_STATS_URL =
 	"https://wakatime.com/api/v1/users/current/stats/last_7_days";
 const MAX_LANGUAGES = 6;
@@ -57,17 +69,22 @@ export function toActivity(json: WakaTimeStatsResponse): WakaTimeActivity {
 
 // 失敗時は null を返す（呼び出し側でキャッシュせずに空データを返す）
 export async function fetchWakaTimeActivity(
-	apiKey: string,
+	accessToken: string,
 ): Promise<WakaTimeActivity | null> {
 	try {
 		const response = await fetch(WAKATIME_STATS_URL, {
 			headers: {
-				Authorization: `Basic ${btoa(apiKey)}`,
+				Authorization: `Bearer ${accessToken}`,
+				"User-Agent": "ojoxux.com (+https://ojoxux.com)",
 			},
 		});
 
 		if (!response.ok) {
-			throw new Error(`WakaTime API responded with ${response.status}`);
+			// 401/403/429 などを区別できるよう、本文の先頭もログに残す
+			const body = (await response.text()).slice(0, 300);
+			throw new Error(
+				`WakaTime API responded with ${response.status}: ${body}`,
+			);
 		}
 
 		return toActivity((await response.json()) as WakaTimeStatsResponse);
