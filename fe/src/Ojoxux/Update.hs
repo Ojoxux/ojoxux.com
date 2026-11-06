@@ -12,6 +12,7 @@ import Ojoxux.Core.CountUp (countDurationMs, countValueAt)
 import Ojoxux.Core.Remote (Remote (..))
 import Ojoxux.Ffi qualified as Ffi
 import Ojoxux.Fireworks.Loop qualified as Fireworks
+import Ojoxux.FrameSub (frameSub)
 import Ojoxux.Model
 
 type AppEffect = Effect () () Model Action
@@ -46,7 +47,7 @@ updateModel = \case
         case m.visitor of
             Loaded target
                 | reduced -> put m{countShown = target}
-                | otherwise -> startSub countUpSub (rAFSub CountTick)
+                | otherwise -> startSub countUpSub (frameSub CountTick)
             _ -> pure ()
     CountTick ts -> do
         m <- get
