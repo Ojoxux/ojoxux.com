@@ -1,5 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { formatDateRange, toActivity } from "../src/wakatime";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import {
+	fetchWakaTimeActivity,
+	formatDateRange,
+	toActivity,
+} from "../src/wakatime";
 
 describe("formatDateRange", () => {
 	it("JST の月/日で範囲を整形する", () => {
@@ -67,5 +71,43 @@ describe("toActivity", () => {
 		});
 
 		expect(activity.languages.map((l) => l.name)).toEqual(["Haskell"]);
+	});
+});
+
+describe("fetchWakaTimeActivity", () => {
+	afterEach(() => {
+		vi.unstubAllGlobals();
+	});
+
+	it("アクセストークンを Bearer で送る", async () => {
+		const fetchMock = vi.fn(async (_url: string, _init: RequestInit) =>
+			Response.json({
+				data: {
+					start: "2026-10-11T15:00:00Z",
+					end: "2026-10-18T14:59:59Z",
+					human_readable_total: "1 hr",
+					languages: [],
+				},
+			}),
+		);
+		vi.stubGlobal("fetch", fetchMock);
+
+		const activity = await fetchWakaTimeActivity("token-123");
+
+		expect(activity?.totalText).toBe("1 hr");
+		const init = fetchMock.mock.calls[0]?.[1];
+		expect(new Headers(init?.headers).get("Authorization")).toBe(
+			"Bearer token-123",
+		);
+	});
+
+	it("エラー時は null を返す", async () => {
+		vi.stubGlobal(
+			"fetch",
+			vi.fn(async () => new Response("forbidden", { status: 403 })),
+		);
+		vi.spyOn(console, "error").mockImplementation(() => {});
+
+		expect(await fetchWakaTimeActivity("token-123")).toBeNull();
 	});
 });
