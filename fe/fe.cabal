@@ -43,6 +43,7 @@ executable fe
     Ojoxux.Ffi
     Ojoxux.Fireworks.Loop
     Ojoxux.Fireworks.Render
+    Ojoxux.FrameSub
     Ojoxux.Model
     Ojoxux.Update
     Ojoxux.View
