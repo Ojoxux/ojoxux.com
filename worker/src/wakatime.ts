@@ -63,11 +63,17 @@ export async function fetchWakaTimeActivity(
 		const response = await fetch(WAKATIME_STATS_URL, {
 			headers: {
 				Authorization: `Basic ${btoa(apiKey)}`,
+				// User-Agent なしの Worker からのリクエストが prod で 403 になっていたため明示する
+				"User-Agent": "ojoxux.com (+https://ojoxux.com)",
 			},
 		});
 
 		if (!response.ok) {
-			throw new Error(`WakaTime API responded with ${response.status}`);
+			// 401/403/429 などを区別できるよう、本文の先頭もログに残す
+			const body = (await response.text()).slice(0, 300);
+			throw new Error(
+				`WakaTime API responded with ${response.status}: ${body}`,
+			);
 		}
 
 		return toActivity((await response.json()) as WakaTimeStatsResponse);
