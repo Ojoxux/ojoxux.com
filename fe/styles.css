@@ -287,6 +287,18 @@ code {
 		height: 100%;
 		overflow-y: auto;
 	}
+
+	.home__main,
+	.profile-column,
+	.panel__content {
+		scrollbar-width: none;
+	}
+
+	.home__main::-webkit-scrollbar,
+	.profile-column::-webkit-scrollbar,
+	.panel__content::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 /* ---------- 花火 ---------- */
