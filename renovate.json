@@ -12,6 +12,9 @@
   "rebaseWhen": "behind-base-branch",
   "dependencyDashboard": true,
   "labels": ["dependencies"],
+  "nix": {
+    "enabled": true
+  },
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["on monday"]
