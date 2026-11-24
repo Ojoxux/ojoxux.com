@@ -2,6 +2,8 @@ name: Lint
 
 on:
   push:
+    branches:
+      - staging
   pull_request:
 
 jobs:
