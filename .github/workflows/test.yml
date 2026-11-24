@@ -3,6 +3,8 @@ name: Test
 on:
   push:
   pull_request:
+  # bump-index-state.yml から起動する
+  workflow_dispatch:
 
 jobs:
   test:
