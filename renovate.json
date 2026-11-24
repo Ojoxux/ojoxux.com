@@ -5,16 +5,19 @@
   ],
   "timezone": "Asia/Tokyo",
   "baseBranchPatterns": ["staging"],
-  "schedule": ["before 9am on monday"],
+  "schedule": ["on monday"],
+  "prHourlyLimit": 0,
   "minimumReleaseAge": "3 days",
   "internalChecksFilter": "strict",
-  "prCreation": "not-pending",
   "rebaseWhen": "behind-base-branch",
   "dependencyDashboard": true,
   "labels": ["dependencies"],
+  "nix": {
+    "enabled": true
+  },
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 9am on monday"]
+    "schedule": ["on monday"]
   },
   "packageRules": [
     {
