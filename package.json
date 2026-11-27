@@ -5,13 +5,11 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "scripts/build.sh",
-		"build:wasm": "scripts/build-wasm.sh",
-		"watch:fe": "scripts/watch-fe.sh",
 		"gen:types": "scripts/gen-types.sh",
 		"preview": "vite preview",
 		"deploy:prod": "WRANGLER_CONFIG=wrangler.prod.jsonc scripts/build.sh && wrangler d1 migrations apply ojoxux-com-prod-db --config wrangler.prod.jsonc --remote && wrangler deploy",
 		"test": "vitest run",
-		"test:hs": "cabal test ojoxux-api:test:api-test fe:test:fe-core-test",
+		"test:hs": "cabal test ojoxux-api:test:api-test",
 		"typecheck": "tsc -p tsconfig.json && tsc -p worker/tsconfig.json",
 		"db:migrate:local": "wrangler d1 migrations apply ojoxux-com-prod-db --local",
 		"format": "biome format --write",
@@ -21,9 +19,9 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.6.8",
-		"@bjorn3/browser_wasi_shim": "^0.4.2",
 		"@cloudflare/vite-plugin": "^1.64.0",
 		"@cloudflare/workers-types": "^5.20261016.1",
+		"@effect/vitest": "^4.1.6",
 		"@types/node": "^26.0.0",
 		"typescript": "^7.0.0",
 		"vite": "^8.3.4",
@@ -31,6 +29,8 @@
 		"wrangler": "^4.151.1"
 	},
 	"dependencies": {
+		"@effect/ui": "https://pkg.pr.new/Effect-TS/ui/@effect/ui@22128c6",
+		"effect": "^4.1.6",
 		"hono": "^4.13.13"
 	}
 }

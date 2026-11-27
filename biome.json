@@ -9,7 +9,8 @@
 		"ignoreUnknown": false,
 		"includes": [
 			"worker/**/*",
-			"fe/js/**/*",
+			"fe/src/**/*",
+			"fe/test/**/*",
 			"vite.config.ts",
 			"fe/styles.css",
 			"vitest.config.ts",
