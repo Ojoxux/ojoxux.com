@@ -19,7 +19,6 @@
   },
   "include": [
     "fe/src/**/*.ts",
-    "fe/test/**/*.ts",
     "vite.config.ts",
     "vitest.config.ts"
   ]

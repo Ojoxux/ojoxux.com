@@ -212,7 +212,7 @@ packages:
     engines: {node: '>=12'}
 
   '@effect/ui@https://pkg.pr.new/Effect-TS/ui/@effect/ui@22128c6':
-    resolution: {tarball: https://pkg.pr.new/Effect-TS/ui/@effect/ui@22128c6}
+    resolution: {integrity: sha512-b0RsW02XDOdvCfglyl3oGB1wfFpiLc/ANQa+zmKe8qS0z7Z1rTdxsa3fVZfTAlgkdxsyc0jtijYOHC1Mgh5JFQ==, tarball: https://pkg.pr.new/Effect-TS/ui/@effect/ui@22128c6}
     version: 0.0.0
     peerDependencies:
       effect: ^4.1.4

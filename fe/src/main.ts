@@ -3,8 +3,8 @@ import { BrowserHost } from "@effect/ui/html";
 import { Effect, Layer } from "effect";
 import { FetchHttpClient } from "effect/http";
 import "../styles.css";
-import { App } from "./App.ts";
-import { resolveBirthdayMode } from "./core/basics.ts";
+import { App } from "./app.ts";
+import { resolveBirthdayMode } from "./components/fireworks/birthday-mode.ts";
 
 const readBirthdayFlag = (): boolean => {
 	try {

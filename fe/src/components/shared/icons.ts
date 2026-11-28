@@ -1,14 +1,5 @@
 import type { Html } from "@effect/ui/html";
 
-export const SectionHeading = <M>(h: Html.H<M>, label: string) =>
-	h.h2.class("section-heading").children(label);
-
-/** WaveDefault: パネルの区切り / WaveProfile: プロフィールの下 */
-export const WaveDivider = <M>(h: Html.H<M>, wave: "default" | "profile") =>
-	h.div
-		.attr("aria-hidden", "true")
-		.class("wave", wave === "profile" && "wave--profile");
-
 // 塗りつぶしのブランドアイコン
 const FilledIcon = <M>(h: Html.H<M>, d: string, cls: string) =>
 	h.svg

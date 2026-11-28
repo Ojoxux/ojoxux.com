@@ -1,5 +1,5 @@
 // 玉の破裂で星を生成する（旧 Ojoxux.Core.Fireworks.Shells）
-import { roundHalfUp } from "../basics.ts";
+import { roundHalfUp } from "../../shared/round-half-up.ts";
 import { gin, kin, white } from "./palette.ts";
 import type { Rng } from "./random.ts";
 import type { Color, Grade, Particle, ShellSpec, SplitSpec } from "./types.ts";

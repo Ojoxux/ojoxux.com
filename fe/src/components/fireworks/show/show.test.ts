@@ -1,26 +1,9 @@
-// 旧 fe/test/*.hs（hspec）を移植したもの
 import { describe, expect, it } from "vitest";
-import {
-	countValueAt,
-	easeOutCubic,
-	filledBlocks,
-	formatWithSeparator,
-	resolveBirthdayMode,
-	roundHalfUp,
-	rowBlocks,
-} from "../src/core/basics.ts";
-import { kin, nishiki, saishiki } from "../src/core/fireworks/palette.ts";
-import {
-	particleColor,
-	updateParticle,
-} from "../src/core/fireworks/particle.ts";
-import {
-	buildProgram,
-	riseSpeedFor,
-	sectionAt,
-} from "../src/core/fireworks/program.ts";
-import { Rng } from "../src/core/fireworks/random.ts";
-import { explodeShell } from "../src/core/fireworks/shells.ts";
+import { kin, nishiki, saishiki } from "./palette.ts";
+import { particleColor, updateParticle } from "./particle.ts";
+import { buildProgram, riseSpeedFor, sectionAt } from "./program.ts";
+import { Rng } from "./random.ts";
+import { explodeShell } from "./shells.ts";
 import {
 	drawItems,
 	isFinished,
@@ -31,7 +14,7 @@ import {
 	type ShowState,
 	step,
 	stepMs,
-} from "../src/core/fireworks/show.ts";
+} from "./show.ts";
 import {
 	emptyStats,
 	formatStats,
@@ -39,75 +22,8 @@ import {
 	statFrames,
 	statMean,
 	statP95,
-} from "../src/core/fireworks/stats.ts";
-import {
-	type Particle,
-	type Shell,
-	shellSpec,
-} from "../src/core/fireworks/types.ts";
-
-describe("roundHalfUp", () => {
-	it("JS の Math.round と同じく .5 を切り上げる", () => {
-		expect([2.5, 3.5, 1.25, 0].map(roundHalfUp)).toEqual([3, 4, 1, 0]);
-	});
-});
-
-describe("resolveBirthdayMode", () => {
-	it("8/18 は誕生日", () =>
-		expect(resolveBirthdayMode(false, false, 8, 18)).toBe(true));
-	it("それ以外の日は誕生日ではない", () =>
-		expect(resolveBirthdayMode(false, false, 8, 17)).toBe(false));
-	it("8 月以外の 18 日は誕生日ではない", () =>
-		expect(resolveBirthdayMode(false, false, 7, 18)).toBe(false));
-	it("localStorage のフラグがあれば常に誕生日", () =>
-		expect(resolveBirthdayMode(true, false, 1, 1)).toBe(true));
-	it("ビルド時のフラグがあれば常に誕生日", () =>
-		expect(resolveBirthdayMode(false, true, 1, 1)).toBe(true));
-});
-
-describe("easeOutCubic", () => {
-	it("0 と 1 で端点を返す", () => {
-		expect(easeOutCubic(0)).toBe(0);
-		expect(easeOutCubic(1)).toBe(1);
-	});
-	it("範囲外の入力は 0..1 に丸める", () => {
-		expect(easeOutCubic(-1)).toBe(0);
-		expect(easeOutCubic(2)).toBe(1);
-	});
-});
-
-describe("countValueAt", () => {
-	it("開始時は 0", () => expect(countValueAt(1000, 0)).toBe(0));
-	it("半分の時間で ease-out の 87.5%", () =>
-		expect(countValueAt(1000, 500)).toBe(875));
-	it("所要時間を過ぎたら目標値で止まる", () => {
-		expect(countValueAt(1000, 1000)).toBe(1000);
-		expect(countValueAt(1000, 5000)).toBe(1000);
-	});
-});
-
-describe("formatWithSeparator", () => {
-	it("3 桁ごとにカンマを入れる", () => {
-		expect([0, 999, 1000, 1234567, -1234].map(formatWithSeparator)).toEqual([
-			"0",
-			"999",
-			"1,000",
-			"1,234,567",
-			"-1,234",
-		]);
-	});
-});
-
-describe("filledBlocks", () => {
-	it("1 行は 10 ブロック", () => expect(rowBlocks).toBe(10));
-	it("パーセントをブロック数に丸める（.5 は切り上げ）", () => {
-		expect([0, 12.5, 25, 75, 100].map(filledBlocks)).toEqual([0, 1, 3, 8, 10]);
-	});
-	it("0..rowBlocks の範囲に収める", () => {
-		expect(filledBlocks(150)).toBe(10);
-		expect(filledBlocks(-5)).toBe(0);
-	});
-});
+} from "./stats.ts";
+import { type Particle, type Shell, shellSpec } from "./types.ts";
 
 const sampleParticle = (overrides: Partial<Particle> = {}): Particle => ({
 	x: 0,

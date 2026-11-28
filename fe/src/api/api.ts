@@ -6,7 +6,7 @@ import {
 	BlogPost,
 	VisitResult,
 	WakaTimeActivity,
-} from "../domain/Api.ts";
+} from "./api-schema.ts";
 
 /** Worker 側の MAX_POST_LIMIT (10) を超えると 5 件に戻されるので、それ以下にする */
 const postLimit = 10;

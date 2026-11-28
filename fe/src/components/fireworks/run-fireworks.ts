@@ -5,7 +5,7 @@
  */
 import { Component, Mount } from "@effect/ui";
 import { Effect } from "effect";
-import { sectionAt } from "../core/fireworks/program.ts";
+import { sectionAt } from "./show/program.ts";
 import {
 	type DrawItem,
 	drawItems,
@@ -18,13 +18,8 @@ import {
 	type ShowState,
 	step,
 	stepMs,
-} from "../core/fireworks/show.ts";
-import {
-	emptyStats,
-	formatStats,
-	record,
-	type Stats,
-} from "../core/fireworks/stats.ts";
+} from "./show/show.ts";
+import { emptyStats, formatStats, record, type Stats } from "./show/stats.ts";
 
 /** 実サイズの 1/3 で保持し、CSS で拡大してドット感を出す */
 const pixelScale = 3;

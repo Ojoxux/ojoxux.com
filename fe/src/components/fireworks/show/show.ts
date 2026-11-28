@@ -3,7 +3,7 @@
  * 描画とタイミング（requestAnimationFrame）は fe/src/mounts/Fireworks.ts が持つ。
  * Haskell 版は毎ステップ新しい状態を返していたが、ここでは状態をその場で書き換える
  */
-import { roundHalfUp } from "../basics.ts";
+import { roundHalfUp } from "../../shared/round-half-up.ts";
 import { white } from "./palette.ts";
 import { particleColor, updateParticle } from "./particle.ts";
 import { buildProgram } from "./program.ts";
