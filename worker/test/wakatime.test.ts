@@ -75,20 +75,24 @@ describe("toActivity", () => {
 });
 
 describe("fetchWakaTimeActivity", () => {
+	const stats = {
+		data: {
+			start: "2026-10-11T15:00:00Z",
+			end: "2026-10-18T14:59:59Z",
+			human_readable_total: "1 hr",
+			languages: [],
+		},
+	};
+
 	afterEach(() => {
+		vi.useRealTimers();
 		vi.unstubAllGlobals();
+		vi.restoreAllMocks();
 	});
 
 	it("アクセストークンを Bearer で送る", async () => {
-		const fetchMock = vi.fn(async (_url: string, _init: RequestInit) =>
-			Response.json({
-				data: {
-					start: "2026-10-11T15:00:00Z",
-					end: "2026-10-18T14:59:59Z",
-					human_readable_total: "1 hr",
-					languages: [],
-				},
-			}),
+		const fetchMock = vi.fn(async (_url: URL, _init: RequestInit) =>
+			Response.json(stats),
 		);
 		vi.stubGlobal("fetch", fetchMock);
 
@@ -101,13 +105,114 @@ describe("fetchWakaTimeActivity", () => {
 		);
 	});
 
-	it("エラー時は null を返す", async () => {
-		vi.stubGlobal(
-			"fetch",
-			vi.fn(async () => new Response("forbidden", { status: 403 })),
+	it("通信失敗のあとに再試行して取得できる", async () => {
+		const fetchMock = vi
+			.fn()
+			.mockRejectedValueOnce(new TypeError("network failed"))
+			.mockResolvedValueOnce(Response.json(stats));
+		vi.stubGlobal("fetch", fetchMock);
+
+		expect(await fetchWakaTimeActivity("token-123")).toMatchObject({
+			totalText: "1 hr",
+		});
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+	});
+
+	it("503 が続いたら再試行は1回で止め、ステータスだけを記録する", async () => {
+		const fetchMock = vi.fn(
+			async () => new Response("private body", { status: 503 }),
 		);
-		vi.spyOn(console, "error").mockImplementation(() => {});
+		const log = vi.spyOn(console, "error").mockImplementation(() => {});
+		vi.stubGlobal("fetch", fetchMock);
 
 		expect(await fetchWakaTimeActivity("token-123")).toBeNull();
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		expect(log).toHaveBeenCalledExactlyOnceWith(
+			"Failed to fetch WakaTime stats:",
+			{
+				reason: "WakaTimeStatusError",
+				status: 503,
+			},
+		);
+	});
+
+	it.each([401, 403, 429])("%i では再試行しない", async (status) => {
+		const fetchMock = vi.fn(
+			async () => new Response("private body", { status }),
+		);
+		const log = vi.spyOn(console, "error").mockImplementation(() => {});
+		vi.stubGlobal("fetch", fetchMock);
+
+		expect(await fetchWakaTimeActivity("token-123")).toBeNull();
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+		expect(log).toHaveBeenCalledExactlyOnceWith(
+			"Failed to fetch WakaTime stats:",
+			{
+				reason: "WakaTimeStatusError",
+				status,
+			},
+		);
+	});
+
+	it.each([
+		["不正な JSON", "not JSON"],
+		[
+			"型が合わない JSON",
+			JSON.stringify({ data: { ...stats.data, languages: null } }),
+		],
+		[
+			"日付が不正な JSON",
+			JSON.stringify({ data: { ...stats.data, start: "" } }),
+		],
+	])("%s は再試行せず Schema のエラーを記録する", async (_name, body) => {
+		const fetchMock = vi.fn(async () => new Response(body));
+		const log = vi.spyOn(console, "error").mockImplementation(() => {});
+		vi.stubGlobal("fetch", fetchMock);
+
+		expect(await fetchWakaTimeActivity("token-123")).toBeNull();
+		expect(fetchMock).toHaveBeenCalledTimes(1);
+		expect(log).toHaveBeenCalledExactlyOnceWith(
+			"Failed to fetch WakaTime stats:",
+			{
+				reason: "SchemaError",
+			},
+		);
+	});
+
+	it("本文の読み取りが止まっても各リクエストを中断できる", async () => {
+		vi.useFakeTimers();
+		const log = vi.spyOn(console, "error").mockImplementation(() => {});
+		const fetchMock = vi.fn(
+			async (_url: URL, { signal }: RequestInit) =>
+				new Response(
+					new ReadableStream({
+						start(controller) {
+							signal?.addEventListener(
+								"abort",
+								() => controller.error(signal.reason),
+								{
+									once: true,
+								},
+							);
+						},
+					}),
+				),
+		);
+		vi.stubGlobal("fetch", fetchMock);
+
+		const activity = fetchWakaTimeActivity("token-123");
+		await vi.advanceTimersByTimeAsync(3250);
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		expect(fetchMock.mock.calls[0]?.[1].signal?.aborted).toBe(true);
+
+		await vi.advanceTimersByTimeAsync(3000);
+		expect(await activity).toBeNull();
+		expect(fetchMock.mock.calls[1]?.[1].signal?.aborted).toBe(true);
+		expect(log).toHaveBeenCalledExactlyOnceWith(
+			"Failed to fetch WakaTime stats:",
+			{
+				reason: "TimeoutError",
+			},
+		);
 	});
 });
