@@ -6,6 +6,8 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client", "node"],
     "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "allowImportingTsExtensions": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
@@ -16,8 +18,8 @@
     "noEmit": true
   },
   "include": [
-    "fe/js/**/*.ts",
-    "fe/wasm-out/*.d.ts",
+    "fe/src/**/*.ts",
+    "shared/**/*.ts",
     "vite.config.ts",
     "vitest.config.ts"
   ]

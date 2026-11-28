@@ -1,5 +1,5 @@
+import type { BlogPost } from "../../shared/api-schema";
 import { withCache } from "./cache";
-import type { BlogPost } from "./generated/api";
 
 export type BasePost = Omit<BlogPost, "thumbnail">;
 

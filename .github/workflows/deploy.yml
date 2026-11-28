@@ -23,9 +23,6 @@ jobs:
 
       - uses: ./.github/actions/setup-toolchain
 
-      - name: Build WASM
-        run: nix develop --command env OPTIMIZE=1 scripts/build-wasm.sh
-
       - name: Build for Cloudflare
         run: pnpm exec vite build
         env:
