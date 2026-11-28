@@ -1,4 +1,4 @@
-// ?fireworks-stats のときの計測値。区間ごとに集めて 1 行に整形する（旧 Ojoxux.Core.Fireworks.Stats）
+// ?fireworks-stats のときの計測値。区間ごとに集めて 1 行に整形する
 import type { Section } from "./program.ts";
 
 export interface Stats {

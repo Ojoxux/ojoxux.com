@@ -25,7 +25,7 @@ export class Api extends Context.Service<
 			const client = (yield* HttpClient.HttpClient).pipe(
 				HttpClient.filterStatusOk,
 			);
-			// エラーレスポンスの中身は使わない（Miso 版もログ以上のことはしていない）
+			// エラーレスポンスの中身は使わない
 			const failAs = (endpoint: string) =>
 				Effect.mapError(() => new ApiError({ endpoint }));
 

@@ -1,5 +1,5 @@
 name: Setup toolchain
-description: pnpm / Node（ランナー上）と Nix（GHC WASM・ネイティブ GHC）を用意し、cabal のストアを復元する
+description: pnpm / Node（ランナー上）と Nix（ネイティブ GHC）を用意し、cabal のストアを復元する
 
 runs:
   using: composite
@@ -28,16 +28,14 @@ runs:
       uses: actions/cache@v6
       with:
         path: |
-          ~/.ghc-wasm/.cabal
           ~/.cabal
           ~/.local/state/cabal
           ~/.cache/cabal
           dist-newstyle
-          dist-wasm
         key: cabal-${{ runner.os }}-${{ hashFiles('flake.lock', 'cabal.project', '**/*.cabal') }}
         restore-keys: |
           cabal-${{ runner.os }}-
 
     - name: Update cabal package index
       shell: bash
-      run: nix develop --command bash -c 'cabal update && wasm32-wasi-cabal update'
+      run: nix develop --command cabal update

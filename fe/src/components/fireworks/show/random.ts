@@ -1,7 +1,5 @@
 /**
- * シード付きの乱数（旧 Ojoxux.Core.Fireworks.Random）。
- * Haskell 版は splitmix だったが、毎フレーム数千回呼ぶので BigInt を使わない sfc32 にした。
- * 系列は Haskell 版と一致しない
+ * シード付きの乱数。毎フレーム数千回呼ぶので、BigInt を使わない sfc32 を使う。
  */
 export class Rng {
 	#a: number;

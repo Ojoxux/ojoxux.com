@@ -26,9 +26,6 @@ executable gen-ts
     , base              <5
     , ojoxux-api
 
-  if arch(wasm32)
-    buildable: False
-
 test-suite api-test
   import:         warnings
   type:           exitcode-stdio-1.0
@@ -41,6 +38,3 @@ test-suite api-test
     , hspec       >=2.11 && <2.12
     , ojoxux-api
     , text
-
-  if arch(wasm32)
-    buildable: False

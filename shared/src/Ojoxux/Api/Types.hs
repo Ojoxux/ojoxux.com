@@ -1,4 +1,4 @@
-{- | フロント（Miso）と Worker（Hono）で共有する API 型。
+{- | フロントエンドと Worker で共有する API 型。
 TS 側の型は shared/gen/GenTs.hs がここから生成する。
 -}
 module Ojoxux.Api.Types (

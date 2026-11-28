@@ -1,7 +1,7 @@
 /**
- * ショー全体の状態と 1 ステップ（1/60 秒）の物理（旧 Ojoxux.Core.Fireworks.Show）。
- * 描画とタイミング（requestAnimationFrame）は fe/src/mounts/Fireworks.ts が持つ。
- * Haskell 版は毎ステップ新しい状態を返していたが、ここでは状態をその場で書き換える
+ * ショー全体の状態と 1 ステップ（1/60 秒）の物理。
+ * 描画とタイミング（requestAnimationFrame）は ../run-fireworks.ts が持つ。
+ * 物理ステップごとに粒子の状態をその場で更新する。
  */
 import { roundHalfUp } from "../../shared/round-half-up.ts";
 import { white } from "./palette.ts";

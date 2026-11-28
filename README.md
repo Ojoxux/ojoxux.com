@@ -1,3 +1,3 @@
 # ojoxux.com
 
-My personal site, written in Haskell with Miso. It compiles to WebAssembly via GHC's WASM backend and runs on Cloudflare Workers.
+My personal site runs on Cloudflare Workers, with an Effect UI frontend and a Hono API. The shared Haskell package defines the API types and generates their TypeScript counterparts.

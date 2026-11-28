@@ -1,4 +1,4 @@
-// 約 58 秒の演目（旧 Ojoxux.Core.Fireworks.Program）
+// 約 58 秒の演目
 import { gin, iroHenkaPairs, kin, nishiki, saishiki } from "./palette.ts";
 import type { Rng } from "./random.ts";
 import {

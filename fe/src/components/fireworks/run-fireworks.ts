@@ -1,5 +1,5 @@
 /**
- * 花火を描く Mount（旧 Ojoxux.Fireworks.{Loop,Render}）。
+ * 花火を描く Mount。
  * 粒子は毎フレーム数千個あり Model に載せられないので、物理と描画はこの Mount のスコープの中で回す。
  * 要素が消えるとスコープが閉じ、ループと canvas を片付ける
  */

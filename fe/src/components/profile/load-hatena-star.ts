@@ -1,4 +1,4 @@
-// はてなスターを読み込む Mount（旧 fe/js/bridge.ts の initHatenaStar）
+// はてなスターを読み込む Mount
 import { Component, Mount } from "@effect/ui";
 import { Effect } from "effect";
 

@@ -1,4 +1,4 @@
-// 星（粒子）の 1 ステップ分の更新と色（旧 Ojoxux.Core.Fireworks.Particle）
+// 星（粒子）の 1 ステップ分の更新と色
 import { white } from "./palette.ts";
 import type { Color, Particle } from "./types.ts";
 

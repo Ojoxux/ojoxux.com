@@ -8,7 +8,7 @@ export default defineConfig({
 	],
 	server: {
 		watch: {
-			ignored: ["**/dist-newstyle/**", "**/dist-wasm/**"],
+			ignored: ["**/dist-newstyle/**"],
 		},
 	},
 });

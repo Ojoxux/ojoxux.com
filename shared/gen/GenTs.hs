@@ -3,7 +3,7 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 {- | Ojoxux.Api.Types から Worker 用の TypeScript 型を生成する。
-TypeScript インスタンスはここだけで導出し、WASM ビルドに Template Haskell を持ち込まない。
+TypeScript インスタンスはこの生成ツールで導出する。
 -}
 module Main (main) where
 

@@ -21,5 +21,3 @@ docs
 
 # Haskell
 dist-newstyle
-dist-wasm
-fe/wasm-out
