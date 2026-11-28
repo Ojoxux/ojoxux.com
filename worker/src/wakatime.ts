@@ -1,17 +1,28 @@
-import type { WakaTimeActivity } from "../../shared/api-schema";
+import { Data, Effect, Schedule, Schema } from "effect";
+import {
+	type WakaTimeActivity,
+	WakaTimeLanguage,
+} from "../../shared/api-schema";
 
-export type WakaTimeStatsResponse = {
-	data: {
-		start: string;
-		end: string;
-		human_readable_total: string;
-		languages: Array<{
-			name: string;
-			text: string;
-			percent: number;
-		}>;
-	};
-};
+const DateString = Schema.String.check(
+	Schema.makeFilter((value: string) => Number.isFinite(Date.parse(value)), {
+		expected: "a valid date string",
+	}),
+);
+
+const WakaTimeStatsResponse = Schema.Struct({
+	data: Schema.Struct({
+		start: DateString,
+		end: DateString,
+		human_readable_total: Schema.String,
+		languages: Schema.Array(WakaTimeLanguage),
+	}),
+});
+export type WakaTimeStatsResponse = typeof WakaTimeStatsResponse.Type;
+
+const decodeWakaTimeStats = Schema.decodeUnknownEffect(
+	Schema.fromJsonString(WakaTimeStatsResponse),
+);
 
 export const EMPTY_ACTIVITY: WakaTimeActivity = {
 	rangeText: "",
@@ -67,29 +78,62 @@ export function toActivity(json: WakaTimeStatsResponse): WakaTimeActivity {
 	};
 }
 
+class WakaTimeStatusError extends Data.TaggedError("WakaTimeStatusError")<{
+	readonly status: number;
+}> {}
+
+class WakaTimeTransportError extends Data.TaggedError(
+	"WakaTimeTransportError",
+) {}
+
 // 失敗時は null を返す（呼び出し側でキャッシュせずに空データを返す）
-export async function fetchWakaTimeActivity(
+export function fetchWakaTimeActivity(
 	accessToken: string,
 ): Promise<WakaTimeActivity | null> {
-	try {
-		const response = await fetch(WAKATIME_STATS_URL, {
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-				"User-Agent": "ojoxux.com (+https://ojoxux.com)",
-			},
-		});
+	const load = Effect.tryPromise({
+		try: async (signal) => {
+			const response = await fetch(WAKATIME_STATS_URL, {
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+					"User-Agent": "ojoxux.com (+https://ojoxux.com)",
+				},
+				signal,
+			});
 
-		if (!response.ok) {
-			// 401/403/429 などを区別できるよう、本文の先頭もログに残す
-			const body = (await response.text()).slice(0, 300);
-			throw new Error(
-				`WakaTime API responded with ${response.status}: ${body}`,
-			);
-		}
+			if (!response.ok) {
+				void response.body?.cancel().catch(() => {});
+				throw new WakaTimeStatusError({ status: response.status });
+			}
 
-		return toActivity((await response.json()) as WakaTimeStatsResponse);
-	} catch (error) {
-		console.error("Failed to fetch WakaTime stats:", error);
-		return null;
-	}
+			return response.text();
+		},
+		catch: (error) =>
+			error instanceof WakaTimeStatusError
+				? error
+				: new WakaTimeTransportError(),
+	}).pipe(
+		Effect.flatMap(decodeWakaTimeStats),
+		Effect.map(toActivity),
+		Effect.timeout("3 seconds"),
+		Effect.retry({
+			times: 1,
+			schedule: Schedule.spaced("250 millis"),
+			while: (error) =>
+				error._tag === "TimeoutError" ||
+				error._tag === "WakaTimeTransportError" ||
+				(error._tag === "WakaTimeStatusError" &&
+					(error.status === 408 || error.status >= 500)),
+		}),
+		Effect.catch((error) =>
+			Effect.sync(() => {
+				console.error("Failed to fetch WakaTime stats:", {
+					reason: error._tag,
+					...(error._tag === "WakaTimeStatusError" && { status: error.status }),
+				});
+				return null;
+			}),
+		),
+	);
+
+	return Effect.runPromise(load);
 }
