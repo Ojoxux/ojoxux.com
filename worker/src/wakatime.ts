@@ -1,4 +1,4 @@
-import type { WakaTimeActivity } from "./generated/api";
+import type { WakaTimeActivity } from "../../shared/api-schema";
 
 export type WakaTimeStatsResponse = {
 	data: {

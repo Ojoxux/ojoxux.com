@@ -2,7 +2,7 @@ import { Component } from "@effect/ui";
 import { Html } from "@effect/ui/html";
 import { Schema } from "effect";
 import { AsyncResult } from "effect/reactivity";
-import type { BlogPost } from "../../api/api-schema.ts";
+import type { BlogPost } from "../../../../shared/api-schema.ts";
 import { Panel } from "../shared/panel.ts";
 import { SectionHeading } from "../shared/section-heading.ts";
 import { SkeletonBox } from "../shared/skeleton-box.ts";

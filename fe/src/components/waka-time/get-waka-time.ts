@@ -1,7 +1,7 @@
 import { Query } from "@effect/ui";
 import { Effect } from "effect";
-import { Api } from "../../api/api.ts";
-import { ApiError, WakaTimeActivity } from "../../api/api-schema.ts";
+import { WakaTimeActivity } from "../../../../shared/api-schema.ts";
+import { Api, ApiError } from "../../api/api.ts";
 
 export class GetWakaTime extends Query.Service<GetWakaTime>()(
 	"ojoxux/GetWakaTime",

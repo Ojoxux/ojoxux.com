@@ -1,5 +1,5 @@
 name: Setup toolchain
-description: pnpm / Node（ランナー上）と Nix（ネイティブ GHC）を用意し、cabal のストアを復元する
+description: Node.js と pnpm をセットアップし、依存関係をインストールする
 
 runs:
   using: composite
@@ -18,24 +18,3 @@ runs:
     - name: Install dependencies
       shell: bash
       run: pnpm install --frozen-lockfile
-
-    - name: Install Nix
-      uses: cachix/install-nix-action@v31
-      with:
-        github_access_token: ${{ github.token }}
-
-    - name: Restore cabal store
-      uses: actions/cache@v6
-      with:
-        path: |
-          ~/.cabal
-          ~/.local/state/cabal
-          ~/.cache/cabal
-          dist-newstyle
-        key: cabal-${{ runner.os }}-${{ hashFiles('flake.lock', 'cabal.project', '**/*.cabal') }}
-        restore-keys: |
-          cabal-${{ runner.os }}-
-
-    - name: Update cabal package index
-      shell: bash
-      run: nix develop --command cabal update

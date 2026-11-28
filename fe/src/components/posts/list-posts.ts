@@ -1,7 +1,7 @@
 import { Query } from "@effect/ui";
 import { Effect, Schema } from "effect";
-import { Api } from "../../api/api.ts";
-import { ApiError, BlogPost } from "../../api/api-schema.ts";
+import { BlogPost } from "../../../../shared/api-schema.ts";
+import { Api, ApiError } from "../../api/api.ts";
 
 export class ListPosts extends Query.Service<ListPosts>()("ojoxux/ListPosts", {
 	success: Schema.Array(BlogPost),

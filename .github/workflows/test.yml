@@ -5,7 +5,6 @@ on:
     branches:
       - staging
   pull_request:
-  # bump-index-state.yml から起動する
   workflow_dispatch:
 
 jobs:
@@ -17,21 +16,11 @@ jobs:
 
       - uses: ./.github/actions/setup-toolchain
 
-      - name: Generate API types
-        run: nix develop --command scripts/gen-types.sh
-
-      # git diff は未追跡ファイルを検出しないので status --porcelain で見る
-      - name: Check generated API types are committed
-        run: test -z "$(git status --porcelain worker/src/generated)"
-
-      - name: Haskell tests
-        run: nix develop --command cabal test ojoxux-api:test:api-test
-
-      - name: Worker and frontend tests
+      - name: Run tests
         run: pnpm test
 
       - name: Typecheck
         run: pnpm typecheck
 
       - name: Build
-        run: pnpm exec vite build
+        run: pnpm run build

@@ -10,11 +10,11 @@
 		"includes": [
 			"worker/**/*",
 			"fe/src/**/*",
+			"shared/**/*.ts",
 			"vite.config.ts",
 			"fe/styles.css",
 			"vitest.config.ts",
-			".vscode/**/*",
-			"!worker/src/generated"
+			".vscode/**/*"
 		]
 	},
 	"formatter": {

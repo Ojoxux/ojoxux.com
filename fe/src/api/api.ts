@@ -2,11 +2,14 @@
 import { Context, Effect, Layer, Schema } from "effect";
 import { HttpClient, HttpClientResponse } from "effect/http";
 import {
-	ApiError,
 	BlogPost,
 	VisitResult,
 	WakaTimeActivity,
-} from "./api-schema.ts";
+} from "../../../shared/api-schema.ts";
+
+export class ApiError extends Schema.TaggedError<ApiError>()("ApiError", {
+	endpoint: Schema.String,
+}) {}
 
 /** Worker 側の MAX_POST_LIMIT (10) を超えると 5 件に戻されるので、それ以下にする */
 const postLimit = 10;

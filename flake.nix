@@ -23,21 +23,9 @@
         system: pkgs: {
           default = pkgs.mkShellNoCC {
             packages = [
-              # API 型の生成とテスト
-              pkgs.cabal-install
-              pkgs.haskell.compiler.ghc912
               pkgs.nodejs_24
               pkgs.pnpm
               pkgs.watchexec
-              pkgs.hlint
-              pkgs.haskellPackages.fourmolu
-            ];
-          };
-          # CI の hlint / fourmolu 用
-          lint = pkgs.mkShellNoCC {
-            packages = [
-              pkgs.hlint
-              pkgs.haskellPackages.fourmolu
             ];
           };
         }
