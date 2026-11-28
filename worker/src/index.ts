@@ -1,7 +1,11 @@
 import { Hono } from "hono";
 import { csrf } from "hono/csrf";
+import type {
+	BlogPost,
+	VisitResult,
+	WakaTimeActivity,
+} from "../../shared/api-schema";
 import { withCache } from "./cache";
-import type { BlogPost, VisitResult, WakaTimeActivity } from "./generated/api";
 import { fetchLatestPosts } from "./posts";
 import { incrementVisitorCount } from "./visit";
 import {
